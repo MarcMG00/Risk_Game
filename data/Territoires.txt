@@ -1,0 +1,42 @@
+1;Europe de l'Ouest
+2;Grande-Bretagne
+3;Europe du Nord
+4;Islande
+5;Scandinavie
+6;Europe du Sud
+7;Russie
+8;Afghanistan
+9;Oural
+10;Moyen-Orient
+11;Chine
+12;Inde
+13;Mongolie
+14;Irkutsk
+15;Yakutsk
+16;Siberie
+17;Japon
+18;Kamchatka
+19;Asie du Sud-Est
+20;Indonesie
+21;Nouvelle Guinee
+22;Australie Occidentale
+23;Australie Orientale
+24;Egypte
+25;Afrique du Nord
+26;Afrique du Sud
+27;Madagascar
+28;Afrique Centrale
+29;Afrique Orientale
+30;Bresil
+31;Venezuela
+32;Perou
+33;Argentine
+34;Amerique Centrale
+35;Etats-Unis de l'Est
+36;Etats-Unis de l'Ouest
+37;Canada de l'Est
+38;Ontario
+39;Alberta
+40;Alaska
+41;Groenland
+42;Territoires du Nord-Ouest

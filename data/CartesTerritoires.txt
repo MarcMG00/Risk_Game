@@ -1,0 +1,42 @@
+1;Afrique du Nord;Cavalier
+2;Egypte;Soldat
+3;Madagascar;Cavalier;
+4;Afrique Centrale;Soldat
+5;Afrique Orientale;Soldat
+6;Afrique du Sud;Artillerie
+7;Grande-Bretagne;Artillerie
+8;Islande;Soldat
+9;Scandinavie;Cavalier
+10;Russie;Cavalier
+11;Europe du Nord;Artillerie
+12;Europe de l'Ouest;Artillerie
+13;Europe du Sud;Artillerie
+14;Nouvelle Guinee;Soldat
+15;Indonesie;Artillerie
+16;Australie Occidentale;Artillerie
+17;Australie Orientale;Artillerie
+18;Siberie;Cavalier
+19;Inde;Cavalier
+20;Oural;Cavalier
+21;Chine;Soldat
+22;Kamchatka;Soldat
+23;Yakutsk;Cavalier
+24;Asie du Sud-Est;Soldat
+25;Mongolie;Soldat
+26;Japon;Artillerie
+27;Irkutsk;Cavalier
+28;Afghanistan;Cavalier
+29;Moyen-Orient;Soldat
+30;Venezuela;Soldat
+31;Argentine;Soldat
+32;Bresil;Artillerie
+33;Perou;Soldat
+34;Alaska;Soldat
+35;Territoires du Nord-Ouest;Artillerie
+36;Alberta;Cavalier
+37;Canada de l'Est;Cavalier
+38;Groenland;Cavalier
+39;Etats-Unis de l'Ouest;Artillerie
+40;Amerique Centrale;Artillerie
+41;Etats-Unis de l'Est;Artillerie
+42;Ontario;Cavalier

@@ -1,0 +1,42 @@
+Europe de l'Ouest;Grande-Bretagne;Europe du Nord;Europe du Sud;Afrique du Nord
+Grande-Bretagne;Europe de l'Ouest;Islande;Scandinavie;Europe du Nord
+Europe du Nord;Europe de l'Ouest;Grande-Bretagne;Europe du Sud;Scandinavie;Russie
+Islande;Grande-Bretagne;Scandinavie;Groenland
+Scandinavie;Grande-Bretagne;Russie;Islande;Europe du Nord
+Europe du Sud;Europe du Nord;Europe de l'Ouest;Russie;Moyen-Orient;Afrique du Nord;Egypte
+Russie;Scandinavie;Europe du Sud;Europe du Nord;Oural;Afghanistan;Moyen-Orient
+Afghanistan;Oural;Moyen-Orient;Russie;Chine;Inde
+Oural;Afghanistan;Chine;Siberie;Russie
+Moyen-Orient;Europe du Sud;Russie;Egypte;Afghanistan;Inde;Afrique Orientale
+Chine;Asie du Sud-Est;Inde;Afghanistan;Oural;Mongolie;Siberie
+Inde;Chine;Moyen-Orient;Afghanistan;Asie du Sud-Est
+Mongolie;Japon;Chine;Irkutsk;Kamchatka;Siberie
+Irkutsk;Mongolie;Yakutsk;Siberie;Kamchatka
+Yakutsk;Irkutsk;Siberie;Kamchatka
+Siberie;Oural;Chine;Mongolie;Irkutsk;Yakutsk
+Japon;Monfolie;Kamchatka
+Kamchatka;Japon;Yakutsk;Irkutsk;Mongolie;Alaska
+Asie du Sud-Est;Indonesie;Inde;Chine
+Indonesie;Asie du Sud-Est;Nouvelle Guinee;Australie Occidentale
+Nouvelle Guinee;Australie Orientale;Indonesie
+Australie Occidentale;Australie Orientale;Nouvelle Guinee
+Australie Orientale;Australie Occidentale;Indonesie
+Egypte;Europe du Sud;Afrique du Nord;Moyen-Orient;Afrique Orientale
+Afrique du Nord;Afrique Orientale;Egypte;Europe de l'Ouest;Bresil;Afrique Centrale;Europe du Sud
+Afrique du Sud;Afrique Orientale;Afrique Centrale;Madagascar
+Madagascar;Afrique du Sud;Afrique Orientale
+Afrique Centrale;Afrique Orientale;Afrique du Nord;Afrique du Sud
+Afrique Orientale;Madagascar;Afrique Centrale;Afrique du Sud;Egypte;Moyen-Orient;Afrique du Nord
+Bresil;Afrique du Nord;Venezuela;Perou;Argentine
+Venezuela;Bresil;Perou;Amerique Centrale
+Perou;Venezuela;Bresil;Argentine
+Argentine;Perou;Bresil
+Amerique Centrale;Etats-Unis de l'Est;Etats-Unis de l'Ouest;Venezuela
+Etats-Unis de l'Est;Etats-Unis de l'Ouest;Ontario;Canada de l'Est
+Etats-Unis de l'Ouest;Amerique Centrale;Etats-Unis de l'Est;Ontario;Alberta
+Canada de l'Est;Etats-Unis de l'Ouest;Groenland;Ontario
+Ontario;Alberta;Canada de l'Est;Etats-Unis de l'Est;Etats-Unis de l'Ouest;Territoires du Nord-Ouest;Groenland
+Alberta;Ontario;Alaska;Territoires du Nord-Ouest;Etats-Unis de l'Ouest
+Alaska;Territoires du Nord-Ouest;Kamchatka;Alberta
+Groenland;Island;Canada de l'Est;Ontario;Territoires du Nord-Ouest
+Territoires du Nord-Ouest;Groenland;Alaska;Ontario;Alberta
