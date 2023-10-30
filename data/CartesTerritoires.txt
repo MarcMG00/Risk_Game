@@ -1,6 +1,6 @@
 1;Afrique du Nord;Cavalier
 2;Egypte;Soldat
-3;Madagascar;Cavalier;
+3;Madagascar;Cavalier
 4;Afrique Centrale;Soldat
 5;Afrique Orientale;Soldat
 6;Afrique du Sud;Artillerie
