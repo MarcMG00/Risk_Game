@@ -1,5 +1,7 @@
 package risk.modele;
 
+import java.util.ArrayList;
+
 public class Territoire {
 	private int numTerritoire;
 	private String nomTerritoire;
@@ -8,10 +10,11 @@ public class Territoire {
 	private Territoire_Adjacent territoiresAdjacents;
 	
 	public Territoire(int numTerritoire, String nomTerritoire) {
+		ArrayList<Territoire> territAdj = new ArrayList<Territoire>();
 		this.numTerritoire = numTerritoire;
 		this.nomTerritoire = nomTerritoire;
 		this.regiments = 0;
-		this.territoiresAdjacents = new Territoire_Adjacent();
+		this.territoiresAdjacents = new Territoire_Adjacent(territAdj);
 		this.joueurPossedantTerritoire = new Joueur();
 	}
 
@@ -41,6 +44,10 @@ public class Territoire {
 
 	public Territoire_Adjacent getTerritoiresAdjacents() {
 		return territoiresAdjacents;
+	}
+
+	public void setTerritoiresAdjacents(Territoire_Adjacent territoiresAdjacents) {
+		this.territoiresAdjacents = territoiresAdjacents;
 	}
 	
 }

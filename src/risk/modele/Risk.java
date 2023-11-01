@@ -4,21 +4,18 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class Risk {
     private int numTour;
     private ArrayList<Joueur> joueurs;
     private ArrayList<Carte_Territoire> cartes;
-	private HashMap<Territoire, Territoire_Adjacent> territoiresAdjacents;
 	private ArrayList<Continent> continents;
 	private ArrayList<Territoire> territoires;
 	
 	public Risk() {
 		this.joueurs = new ArrayList<Joueur>();
 		this.cartes = new ArrayList<Carte_Territoire>();
-		this.territoiresAdjacents = new  HashMap<Territoire, Territoire_Adjacent>();
 		this.continents = new ArrayList<Continent>();
 		this.territoires = new ArrayList<Territoire>();
 	}
@@ -61,6 +58,7 @@ public class Risk {
 	
 	public ArrayList<Carte_Territoire> lectureCartesTerritoire(String fileName) {
 		ArrayList<Territoire> territoiresL = lectureTerritoires("data/Territoires.txt");
+		
 		FileReader fileReader = null;
 	    BufferedReader bufferedReader = null;
 	    
@@ -97,9 +95,10 @@ public class Risk {
 	}
 	
 	public ArrayList<Continent> lectureContinents(String fileName) {
-		ArrayList<Territoire> territoiresLL = lectureTerritoires("data/Territoires.txt");
+		ArrayList<Territoire> territoiresL = lectureTerritoires("data/Territoires.txt");
 		ArrayList<String> territoiresContinentAReinitialiserStr = new ArrayList<String>();
 		ArrayList<Territoire> territoiresContinentAReinitialiserT = new ArrayList<Territoire>();
+		
 		FileReader fileReader = null;
 	    BufferedReader bufferedReader = null;
 	    
@@ -112,9 +111,9 @@ public class Risk {
 				for(int iLStr = 3; iLStr < continentL.length; iLStr++) {
 					territoiresContinentAReinitialiserStr.add(continentL[iLStr]);
 				}
-				for(int iTerrit = 0; iTerrit < territoiresLL.size(); iTerrit++) {
-					if(territoiresContinentAReinitialiserStr.contains(territoiresLL.get(iTerrit).getNomTerritoire())) {
-						territoiresContinentAReinitialiserT.add(territoiresLL.get(iTerrit));
+				for(int iTerrit = 0; iTerrit < territoiresL.size(); iTerrit++) {
+					if(territoiresContinentAReinitialiserStr.contains(territoiresL.get(iTerrit).getNomTerritoire())) {
+						territoiresContinentAReinitialiserT.add(territoiresL.get(iTerrit));
 					}
 				}
 				this.continents.add(new Continent(Integer.parseInt(continentL[0]), continentL[1], Integer.parseInt(continentL[2]), territoiresContinentAReinitialiserT));
@@ -140,8 +139,11 @@ public class Risk {
 		return this.continents;
 	}
 	
-	public HashMap<Territoire, Territoire_Adjacent> lectureTerritoiresAdjacents(String fileName) {
-		ArrayList<Territoire> territoires = lectureTerritoires("data/Territoires.txt");
+	public void lectureTerritoiresAdjacents(String fileName) {
+		ArrayList<Territoire> territoiresL = lectureTerritoires("data/Territoires.txt");
+		ArrayList<Territoire> territoiresAReinitialiserT = new ArrayList<Territoire>();
+		ArrayList<String> territoiresAReinitialiserStr = new ArrayList<String>();
+		
 		FileReader fileReader = null;
 	    BufferedReader bufferedReader = null;
 	    
@@ -151,6 +153,22 @@ public class Risk {
 			String ligne;
 			while ((ligne = bufferedReader.readLine()) != null) {
 				String[] territoiresAdjacents = ligne.split(";");
+				for(int i = 1; i < territoiresAdjacents.length; i++) {
+					territoiresAReinitialiserStr.add(territoiresAdjacents[i]);
+				}
+				for(int iTerrit = 0; iTerrit < territoiresL.size(); iTerrit++) {
+					if(territoiresAReinitialiserStr.contains(territoiresL.get(iTerrit).getNomTerritoire())) {
+						territoiresAReinitialiserT.add(territoiresL.get(iTerrit));
+					}
+				}
+				Territoire_Adjacent territAdjAReinitialiser = new Territoire_Adjacent(territoiresAReinitialiserT);
+				for(int iTerrit2 = 0; iTerrit2 < territoiresL.size(); iTerrit2++) {
+					if(territoiresL.get(iTerrit2).getNomTerritoire().equals(territoiresAdjacents[0])) {
+						territoiresL.get(iTerrit2).setTerritoiresAdjacents(territAdjAReinitialiser);
+					}
+				}
+				territoiresAReinitialiserT = new ArrayList<Territoire>();
+				territoiresAReinitialiserStr = new ArrayList<String>();
 			}
 		}
 	    catch (IOException e) {
@@ -168,14 +186,13 @@ public class Risk {
 				System.out.println("Exception survenue ï¿½ la fermeture du fichier : " + e.getMessage());
 			}
 		}
-		
-		return this.territoiresAdjacents;
 	}
 	
 	public void lancerPartie() {
+		// Vérification des données
 		ArrayList<Territoire> territoiresF = lectureTerritoires("data/Territoires.txt");
 		for(Territoire t : territoiresF) {
-			System.out.println(t.getNumTerritoire() + " "+ t.getNomTerritoire());
+			System.out.println(t.getNumTerritoire() + " " + t.getNomTerritoire());
 		}
 		System.out.println();
 		
@@ -191,6 +208,13 @@ public class Risk {
 		}
 		System.out.println();
 		
+		lectureTerritoiresAdjacents("data/TerritoiresAdjacents.txt");
+		for(Territoire t2 : territoiresF) {
+			for(Territoire ta : t2.getTerritoiresAdjacents().getTerritoiresAdjacents()) {
+				System.out.println(t2.getNomTerritoire() + " " + ta.getNomTerritoire());
+			}
+		}
+		System.out.println();
 	}
 	
 }
