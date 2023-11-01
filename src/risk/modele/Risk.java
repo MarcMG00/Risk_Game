@@ -20,6 +20,7 @@ public class Risk {
 		this.territoires = new ArrayList<Territoire>();
 	}
 	
+	// Lecture du fichier Territoires.txt pour récupérer tous les territoires
 	public ArrayList<Territoire> lectureTerritoires(String fileName) {
 		FileReader fileReader = null;
 	    BufferedReader bufferedReader = null;
@@ -30,6 +31,7 @@ public class Risk {
 			String ligne;
 			while ((ligne = bufferedReader.readLine()) != null) {
 				String[] territoires = ligne.split(";");
+				// Problèmes de duplications, j'ai mis ainsi un break (il y a un max de 42 territoires)
 				if(this.territoires.size() == 42) {
 					break;
 				}
@@ -56,6 +58,7 @@ public class Risk {
 		return this.territoires;
 	}
 	
+	// Lecture du fichier CartesTerritoires.txt pour récupérer toutes les cartes
 	public ArrayList<Carte_Territoire> lectureCartesTerritoire(String fileName) {
 		ArrayList<Territoire> territoiresL = lectureTerritoires("data/Territoires.txt");
 		
@@ -69,8 +72,10 @@ public class Risk {
 			while ((ligne = bufferedReader.readLine()) != null) {
 				String[] cartesTerritoire = ligne.split(";");
 				for(int iTerrit = 0; iTerrit < territoiresL.size(); iTerrit++) {
+					// On transforme les string en objets Territoire, si le nom est trouvé, alors on ajoute le territoire à sa carte correspondante
 					if(territoiresL.get(iTerrit).getNomTerritoire().equals(cartesTerritoire[1])) {
 						this.cartes.add(new Carte_Territoire(Integer.parseInt(cartesTerritoire[0]), territoiresL.get(iTerrit), cartesTerritoire[2]));
+						// Problèmes de duplications, j'ai mis ainsi un break
 						break;
 					}
 				}
@@ -94,6 +99,7 @@ public class Risk {
 		return this.cartes;
 	}
 	
+	// Lecture du fichier Continents.txt pour récupérer tous les continents
 	public ArrayList<Continent> lectureContinents(String fileName) {
 		ArrayList<Territoire> territoiresL = lectureTerritoires("data/Territoires.txt");
 		ArrayList<String> territoiresContinentAReinitialiserStr = new ArrayList<String>();
@@ -108,15 +114,19 @@ public class Risk {
 			String ligne;
 			while ((ligne = bufferedReader.readLine()) != null) {
 				String[] continentL = ligne.split(";");
+				// On prend tous les territoires de la ligne à compter de la position 3 du fichier
 				for(int iLStr = 3; iLStr < continentL.length; iLStr++) {
 					territoiresContinentAReinitialiserStr.add(continentL[iLStr]);
 				}
+				// On transforme les string en objets Territoire, si le nom est trouvé, alors on ajoute le territoire dans une liste
 				for(int iTerrit = 0; iTerrit < territoiresL.size(); iTerrit++) {
 					if(territoiresContinentAReinitialiserStr.contains(territoiresL.get(iTerrit).getNomTerritoire())) {
 						territoiresContinentAReinitialiserT.add(territoiresL.get(iTerrit));
 					}
 				}
+				// On ajoute le continent dans la liste, avec ses données correspondantes
 				this.continents.add(new Continent(Integer.parseInt(continentL[0]), continentL[1], Integer.parseInt(continentL[2]), territoiresContinentAReinitialiserT));
+				// On réinitialise les variables pour le prochain continent
 				territoiresContinentAReinitialiserStr = new ArrayList<String>();
 				territoiresContinentAReinitialiserT = new ArrayList<Territoire>();
 			}
@@ -139,6 +149,7 @@ public class Risk {
 		return this.continents;
 	}
 	
+	// Lecture du fichier TerritoiresAdjacents.txt pour récupérer tous les territoires adjacents de chaque territoire
 	public void lectureTerritoiresAdjacents(String fileName) {
 		ArrayList<Territoire> territoiresL = lectureTerritoires("data/Territoires.txt");
 		ArrayList<Territoire> territoiresAReinitialiserT = new ArrayList<Territoire>();
@@ -153,20 +164,25 @@ public class Risk {
 			String ligne;
 			while ((ligne = bufferedReader.readLine()) != null) {
 				String[] territoiresAdjacents = ligne.split(";");
+				// On ajoute les territoires (string) d'une ligne à compter de la position 1
 				for(int i = 1; i < territoiresAdjacents.length; i++) {
 					territoiresAReinitialiserStr.add(territoiresAdjacents[i]);
 				}
+				// On trasnforme les string en objets Territoire
 				for(int iTerrit = 0; iTerrit < territoiresL.size(); iTerrit++) {
 					if(territoiresAReinitialiserStr.contains(territoiresL.get(iTerrit).getNomTerritoire())) {
 						territoiresAReinitialiserT.add(territoiresL.get(iTerrit));
 					}
 				}
+				// Un objet Territoire_Adjacent correspond à une liste de Territoire
 				Territoire_Adjacent territAdjAReinitialiser = new Territoire_Adjacent(territoiresAReinitialiserT);
+				// A chaque territoire on lui ajoute le Territoire_Adjacent. Le territoire en question,se trouve à la position 0 du fichier
 				for(int iTerrit2 = 0; iTerrit2 < territoiresL.size(); iTerrit2++) {
 					if(territoiresL.get(iTerrit2).getNomTerritoire().equals(territoiresAdjacents[0])) {
 						territoiresL.get(iTerrit2).setTerritoiresAdjacents(territAdjAReinitialiser);
 					}
 				}
+				// On réinitialise les variables pour le prochain territoire
 				territoiresAReinitialiserT = new ArrayList<Territoire>();
 				territoiresAReinitialiserStr = new ArrayList<String>();
 			}
