@@ -1,6 +1,6 @@
-Afrique;3;Afrique du Sud;Afrique Orientale;Afrique Centrale;Madagascar;Egypte;Afrique du Nord
-Europe;5;Europe de l'Ouest;Grande-Bretagne;Europe du Nord;Europe du Sud;Russie;Scandinavie;Islande
-Australie;2;Indonesie;Nouvelle Guinee;Australie Occidentale;Australie Orientale
-Asie;7;Oural;Afghanistan;Chine;Siberie;Moyen-Orient;Inde;Asie du Sud-Est;Japon;Irkutsk;Yakutsk;Kamchatka;Mongolie
-Amerique du Sud;2;Bresil;Perou;Argentine;Venezuela
-Amerique du Nord;5;Alaska;Alberta;Amerique Centrale;Ontario;Groenland;Territoires du Nord-Ouest;Canada de l'Est;Etats-Unis de l'Est;Etats-Unis de l'Ouest
+1;Afrique;3;Afrique du Sud;Afrique Orientale;Afrique Centrale;Madagascar;Egypte;Afrique du Nord
+2;Europe;5;Europe de l'Ouest;Grande-Bretagne;Europe du Nord;Europe du Sud;Russie;Scandinavie;Islande
+3;Australie;2;Indonesie;Nouvelle Guinee;Australie Occidentale;Australie Orientale
+4;Asie;7;Oural;Afghanistan;Chine;Siberie;Moyen-Orient;Inde;Asie du Sud-Est;Japon;Irkutsk;Yakutsk;Kamchatka;Mongolie
+5;Amerique du Sud;2;Bresil;Perou;Argentine;Venezuela
+6;Amerique du Nord;5;Alaska;Alberta;Amerique Centrale;Ontario;Groenland;Territoires du Nord-Ouest;Canada de l'Est;Etats-Unis de l'Est;Etats-Unis de l'Ouest
