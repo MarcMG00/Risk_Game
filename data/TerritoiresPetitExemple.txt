@@ -1,0 +1,5 @@
+1;Europe de l'Ouest
+2;Grande-Bretagne
+3;Europe du Nord
+4;Islande
+5;Scandinavie
