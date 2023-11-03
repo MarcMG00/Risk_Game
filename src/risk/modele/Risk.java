@@ -277,17 +277,26 @@ public class Risk {
 //		}
 
 		// START GAME
-		// Position aléatoire des joueurs, pour établir l'ordre du jeu
+		// Initialisation des listes du jeu
+		this.territoires = lectureTerritoires("data/TerritoiresPetitExemple.txt");
+//		this.cartes = lectureCartesTerritoire("data/CartesTerritoires.txt");
+//		this.continents = lectureContinents("data/Continents.txt");
+//		lectureTerritoiresAdjacents("data/TerritoiresAdjacents.txt");
+		
+		// Position aléatoire des joueurs, pour établir l'ordre du jeu / mélange des cartes
 		Collections.shuffle(this.joueurs);
+		Collections.shuffle(this.cartes);
 		
 		// Choix des différents territoires, commençant par le premier joueur
-		this.territoires = lectureTerritoires("data/TerritoiresPetitExemple.txt");
-		
+		// Tous les territoires doivent être pris
 		while (this.territoires.size() != 0) {
+			// On passe à tour de rôle pour chaque joueur
 			for(Joueur joueur : this.joueurs) {
+				// On affiche les territoires qui sont disponibles
 				for(Territoire territoire : this.territoires) {
 					System.out.println(territoire.getNumTerritoire() + " - " + territoire.getNomTerritoire());
 				}
+				
 				System.out.println(joueur.getNom() + " choisit un territoire parmis ceux proposés ci-dessus. Ecrit seulement le numéro. S'il n'y a plus de territoires, écrit aléatoirement un numéro (rien ne se produira)");
 				Scanner sc = new Scanner(System.in);
 				int numTerritoire = sc.nextInt();
@@ -295,11 +304,14 @@ public class Risk {
 				
 				for(Territoire tChoisit : this.territoires) {
 					if(tChoisit.getNumTerritoire() == numTerritoire) {
+						// On attribue le joueur au territoire choisit
 						tChoisit.setJoueurPossedantTerritoire(joueur);
 						joueur.ajouterTerritoire(tChoisit);
+						
+						// On enlève le territoire choisi de la liste et on le met dans une nouvelle liste
 						this.territoires.remove(tChoisit);
 						this.territoiresChoisits.add(tChoisit);
-						System.out.println("Taille de la liste de territoires : " + this.territoires.size());
+						// On arrête la boucle pour arrêter de parcourir la liste, car on la modifie entre temps (on enlève des territoires)
 						break;
 					}
 				}
@@ -311,36 +323,76 @@ public class Risk {
 		for(Territoire t : this.territoiresChoisits) {
 			System.out.println(t.getNomTerritoire() + " est possédé par le joueur " + t.getJoueurPossedantTerritoire().getNom());
 		}
+		
 		System.out.println();
 		System.out.println("Le choix des territoires a été fait. Procédons à l'emplacement des régiments");
 		
 		// Affectation des régiments au premier tour (avant de commencer réellement le jeu)
 		for(Joueur j : this.joueurs) {
+			// Stock des numéros de territoires possédés par le joueur pour un contrôle
+			ArrayList<Integer> numTerritoires = new ArrayList<Integer>();
+			// Pour chaque joueur, on lui demande de placer les régiments du début du jeu (voir AppRisk.java)
 			while(j.getNbRegimentsRecusParTour() > 0) {
-				System.out.println(j.getNom() + " vous manque " + j.getNbRegimentsRecusParTour() + " régiments à placer. Continue à placer tes régiments");
-				System.out.println();
 				for(Territoire t : j.getTerritoires()) {
-					System.out.println(t.getNumTerritoire() + " - " + t.getNomTerritoire());
+					// Tous les territoires doivent avoir au moins 1 régiment. Donc, on place 1 automatiquement
+					if(t.getRegiments() == 0) {
+						t.setRegiments(1);
+						j.setNbRegimentsRecusParTour(j.getNbRegimentsRecusParTour()-1);
+					}
+					if(!numTerritoires.contains(t.getNumTerritoire())) {
+						numTerritoires.add(t.getNumTerritoire());
+					}
+					System.out.println(t.getNumTerritoire() + " - " + t.getNomTerritoire() + " - nombre de régiments : " + t.getRegiments());
 				}
-				System.out.println(j.getNom() + " choisit un territoire dans lequel placer des régiments (écrit le numéro du territoire) : ");
+				
+				System.out.println(j.getNom() + " il vous manque " + j.getNbRegimentsRecusParTour() + " régiments à placer");
+				System.out.println(j.getNom() + " choisit un territoire dans lequel placer des régiments (écrit le numéro du territoire) :");
 				Scanner sc = new Scanner(System.in);
 				int numTerritoire = sc.nextInt();
-				System.out.println(j.getNom() + " choisit le nombre de régiments à placer sur ce territoire : ");
+				
+				// Si le numéro du territoire n'est pas possédé par le joueur, on lui demande à nouveau de choisir un numéro de territoire
+				if(!numTerritoires.contains(numTerritoire)) {
+					while(!numTerritoires.contains(numTerritoire)) {
+						System.out.println("Choisissez le numéro d'un territoire que vous possédez :");
+						numTerritoire = sc.nextInt();
+						sc.useDelimiter(";|\r?\n|\r");
+					}
+				}
+				
+				System.out.println(j.getNom() + " choisit le nombre de régiments à placer sur ce territoire :");
 				int nbRegiments = sc.nextInt();
+				
+				// Si le nombre de régiments n'est pas le correct, on lui demande à nouveau de saisir une valeur valide
+				if(nbRegiments > j.getNbRegimentsRecusParTour() || nbRegiments <= 0) {
+					while(nbRegiments > j.getNbRegimentsRecusParTour() || nbRegiments <= 0) {
+						System.out.println("Vous ne possédez pas autant de régiments OU la valeur ne peut pas être inférieure ou égale à 0. Saisissez une valeur correcte :");
+						nbRegiments = sc.nextInt();
+						sc.useDelimiter(";|\r?\n|\r");
+					}
+				}
+				
 				for(Territoire t : j.getTerritoires()) {
+					// On attribue le nombre de régiments dans le territoires choisi, puis on enlève les régiments placés au joueur en question
 					if(t.getNumTerritoire() == numTerritoire) {
-						t.setRegiments(nbRegiments);
+						t.setRegiments(t.getRegiments() + nbRegiments);
 						j.setNbRegimentsRecusParTour(j.getNbRegimentsRecusParTour() - nbRegiments);
 						System.out.println(j.getNom() + " a placé " + nbRegiments + " régiments sur le territoire : " + t.getNomTerritoire());
 						System.out.println();
 					}
 				}
 			}
+			
+			// Récapitulatif des choix du joueur
+			System.out.println("Voici le nombre de régiments par territoire que vous possédez : ");
+			for(Territoire t : j.getTerritoires()) {
+				System.out.println(t.getNomTerritoire() + " avec " + t.getRegiments() + " régiments");
+			}
+			System.out.println();
 		}
 		
-		// Avant ça, mettre condition qui fait que chaque territoire doit posséder au moins 1 régiment. Le faire automatiquement,
-		// avant de proposer aux joueurs de placer les régiments.
 		System.out.println("Vous avez fini de placer les régiments de départ. Procédons au jeu JEJEJE");
+		// Début du jeu : un jeu ne fini que lorsqu'il y a un joueur dans la liste de joueurs
+		
 	}
 	
 }
