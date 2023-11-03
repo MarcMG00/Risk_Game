@@ -6,7 +6,8 @@ public class Joueur {
 	private String nom;
 	private String prenom;
 	private int nbRegiments;
-	private int Score;
+	private int nbRegimentsRecusParTour;
+	private int score;
 	private int regimentsAdditionnels;
 	private int numFoisEchangesCartes;
 	private boolean aConqueritEnUntour;
@@ -18,8 +19,22 @@ public class Joueur {
 	private ArrayList<Continent> continents;
 	private ArrayList<Carte_Territoire> cartesTerritoires;
 
-	public Joueur() {
-		// TODO Auto-generated constructor stub
+	public Joueur(String nom, String prenom) {
+		this.nom = nom;
+		this.prenom = prenom;
+		this.nbRegiments = 0;
+		this.nbRegimentsRecusParTour = 0;
+		this.score = 0;
+		this.regimentsAdditionnels = 0;
+		this.numFoisEchangesCartes = 0;
+		this.aConqueritEnUntour = false;
+		this.nbDefenses = 0;
+		this.nbAttaques = 0;
+		this.nbFoisLanceesUn = 0;
+		this.nbTerritoiresConquis = 0;
+		this.territoires = new ArrayList<Territoire>();
+		this.continents = new ArrayList<Continent>();
+		this.cartesTerritoires = new ArrayList<Carte_Territoire>();
 	}
 
 	public int getNbRegiments() {
@@ -31,11 +46,11 @@ public class Joueur {
 	}
 
 	public int getScore() {
-		return Score;
+		return score;
 	}
 
 	public void setScore(int score) {
-		Score = score;
+		this.score = score;
 	}
 
 	public int getRegimentsAdditionnels() {
@@ -125,5 +140,16 @@ public class Joueur {
 	public String getPrenom() {
 		return prenom;
 	}
+
+	public int getNbRegimentsRecusParTour() {
+		return nbRegimentsRecusParTour;
+	}
+
+	public void setNbRegimentsRecusParTour(int nbRegimentsRecusParTour) {
+		this.nbRegimentsRecusParTour = nbRegimentsRecusParTour;
+	}
 	
+	public void ajouterTerritoire(Territoire territoire) {
+		this.territoires.add(territoire);
+	}
 }

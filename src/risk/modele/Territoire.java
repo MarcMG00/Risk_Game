@@ -15,7 +15,7 @@ public class Territoire {
 		this.nomTerritoire = nomTerritoire;
 		this.regiments = 0;
 		this.territoiresAdjacents = new Territoire_Adjacent(territAdj);
-		this.joueurPossedantTerritoire = new Joueur();
+		this.joueurPossedantTerritoire = new Joueur("", "");
 	}
 
 	public int getRegiments() {
