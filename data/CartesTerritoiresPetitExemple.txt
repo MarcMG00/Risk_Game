@@ -1,0 +1,5 @@
+7;Grande-Bretagne;Artillerie
+8;Islande;Soldat
+9;Scandinavie;Cavalier
+11;Europe du Nord;Artillerie
+12;Europe de l'Ouest;Artillerie
