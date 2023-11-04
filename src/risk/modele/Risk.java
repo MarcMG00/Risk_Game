@@ -100,7 +100,7 @@ public class Risk {
 	
 	// Lecture du fichier CartesTerritoires.txt pour récupérer toutes les cartes
 	public ArrayList<Carte_Territoire> lectureCartesTerritoire(String fileName) {
-		ArrayList<Territoire> territoiresL = lectureTerritoires("data/Territoires.txt");
+//		ArrayList<Territoire> territoiresL = lectureTerritoires("data/Territoires.txt");
 		
 		FileReader fileReader = null;
 	    BufferedReader bufferedReader = null;
@@ -111,10 +111,10 @@ public class Risk {
 			String ligne;
 			while ((ligne = bufferedReader.readLine()) != null) {
 				String[] cartesTerritoire = ligne.split(";");
-				for(int iTerrit = 0; iTerrit < territoiresL.size(); iTerrit++) {
+				for(int iTerrit = 0; iTerrit < this.territoires.size(); iTerrit++) {
 					// On transforme les string en objets Territoire, si le nom est trouvé, alors on ajoute le territoire à sa carte correspondante
-					if(territoiresL.get(iTerrit).getNomTerritoire().equals(cartesTerritoire[1])) {
-						this.cartes.add(new Carte_Territoire(Integer.parseInt(cartesTerritoire[0]), territoiresL.get(iTerrit), cartesTerritoire[2]));
+					if(this.territoires.get(iTerrit).getNomTerritoire().equals(cartesTerritoire[1])) {
+						this.cartes.add(new Carte_Territoire(Integer.parseInt(cartesTerritoire[0]), this.territoires.get(iTerrit), cartesTerritoire[2]));
 						// Problèmes de duplications, j'ai mis ainsi un break
 						break;
 					}
@@ -141,7 +141,7 @@ public class Risk {
 	
 	// Lecture du fichier Continents.txt pour récupérer tous les continents
 	public ArrayList<Continent> lectureContinents(String fileName) {
-		ArrayList<Territoire> territoiresL = lectureTerritoires("data/Territoires.txt");
+//		ArrayList<Territoire> territoiresL = lectureTerritoires("data/Territoires.txt");
 		ArrayList<String> territoiresContinentAReinitialiserStr = new ArrayList<String>();
 		ArrayList<Territoire> territoiresContinentAReinitialiserT = new ArrayList<Territoire>();
 		
@@ -159,9 +159,9 @@ public class Risk {
 					territoiresContinentAReinitialiserStr.add(continentL[iLStr]);
 				}
 				// On transforme les string en objets Territoire, si le nom est trouvé, alors on ajoute le territoire dans une liste
-				for(int iTerrit = 0; iTerrit < territoiresL.size(); iTerrit++) {
-					if(territoiresContinentAReinitialiserStr.contains(territoiresL.get(iTerrit).getNomTerritoire())) {
-						territoiresContinentAReinitialiserT.add(territoiresL.get(iTerrit));
+				for(int iTerrit = 0; iTerrit < this.territoires.size(); iTerrit++) {
+					if(territoiresContinentAReinitialiserStr.contains(this.territoires.get(iTerrit).getNomTerritoire())) {
+						territoiresContinentAReinitialiserT.add(this.territoires.get(iTerrit));
 					}
 				}
 				// On ajoute le continent dans la liste, avec ses données correspondantes
@@ -191,7 +191,7 @@ public class Risk {
 	
 	// Lecture du fichier TerritoiresAdjacents.txt pour récupérer tous les territoires adjacents de chaque territoire
 	public void lectureTerritoiresAdjacents(String fileName) {
-		ArrayList<Territoire> territoiresL = lectureTerritoires("data/Territoires.txt");
+//		ArrayList<Territoire> territoiresL = lectureTerritoires("data/Territoires.txt");
 		ArrayList<Territoire> territoiresAReinitialiserT = new ArrayList<Territoire>();
 		ArrayList<String> territoiresAReinitialiserStr = new ArrayList<String>();
 		
@@ -209,17 +209,17 @@ public class Risk {
 					territoiresAReinitialiserStr.add(territoiresAdjacents[i]);
 				}
 				// On trasnforme les string en objets Territoire
-				for(int iTerrit = 0; iTerrit < territoiresL.size(); iTerrit++) {
-					if(territoiresAReinitialiserStr.contains(territoiresL.get(iTerrit).getNomTerritoire())) {
-						territoiresAReinitialiserT.add(territoiresL.get(iTerrit));
+				for(int iTerrit = 0; iTerrit < this.territoires.size(); iTerrit++) {
+					if(territoiresAReinitialiserStr.contains(this.territoires.get(iTerrit).getNomTerritoire())) {
+						territoiresAReinitialiserT.add(this.territoires.get(iTerrit));
 					}
 				}
 				// Un objet Territoire_Adjacent correspond à une liste de Territoire
 				Territoire_Adjacent territAdjAReinitialiser = new Territoire_Adjacent(territoiresAReinitialiserT);
 				// A chaque territoire on lui ajoute le Territoire_Adjacent. Le territoire en question,se trouve à la position 0 du fichier
-				for(int iTerrit2 = 0; iTerrit2 < territoiresL.size(); iTerrit2++) {
-					if(territoiresL.get(iTerrit2).getNomTerritoire().equals(territoiresAdjacents[0])) {
-						territoiresL.get(iTerrit2).setTerritoiresAdjacents(territAdjAReinitialiser);
+				for(int iTerrit2 = 0; iTerrit2 < this.territoires.size(); iTerrit2++) {
+					if(this.territoires.get(iTerrit2).getNomTerritoire().equals(territoiresAdjacents[0])) {
+						this.territoires.get(iTerrit2).setTerritoiresAdjacents(territAdjAReinitialiser);
 					}
 				}
 				// On réinitialise les variables pour le prochain territoire
@@ -246,26 +246,27 @@ public class Risk {
 	
 	public void lancerPartie() {
 		// Vérification des données de la lecture des fichiers
-//		ArrayList<Territoire> territoiresF = lectureTerritoires("data/Territoires.txt");
-//		for(Territoire t : territoiresF) {
+//		this.territoires = lectureTerritoires("data/TerritoiresPetitExemple.txt");
+//		this.cartes = lectureCartesTerritoire("data/CartesTerritoires.txt");
+//		this.continents = lectureContinents("data/Continents.txt");
+//		lectureTerritoiresAdjacents("data/TerritoiresAdjacents.txt");
+//		
+//		for(Territoire t : this.territoires) {
 //			System.out.println(t.getNumTerritoire() + " " + t.getNomTerritoire());
 //		}
 //		System.out.println();
 //		
-//		ArrayList<Carte_Territoire> cartesF = lectureCartesTerritoire("data/CartesTerritoires.txt");
-//		for(Carte_Territoire ct : cartesF) {
+//		for(Carte_Territoire ct : this.cartes) {
 //			System.out.println(ct.getNumCarte() + " " + ct.getTerritoire().getNomTerritoire() + " " + ct.getTypeRegiment());
 //		}
 //		System.out.println();
 //		
-//		ArrayList<Continent> continentsF = lectureContinents("data/Continents.txt");
-//		for(Continent co : continentsF) {
+//		for(Continent co : this.continents) {
 //			System.out.println(co.getNumContinent() + " " + co.getNomContinent()  + " " + co.getValeurBonus() + " " + co.getTerritoires());
 //		}
 //		System.out.println();
 //		
-//		lectureTerritoiresAdjacents("data/TerritoiresAdjacents.txt");
-//		for(Territoire t2 : territoiresF) {
+//		for(Territoire t2 : this.territoires) {
 //			for(Territoire ta : t2.getTerritoiresAdjacents().getTerritoiresAdjacents()) {
 //				System.out.println(t2.getNomTerritoire() + " " + ta.getNomTerritoire());
 //			}
@@ -279,9 +280,9 @@ public class Risk {
 		// START GAME
 		// Initialisation des listes du jeu
 		this.territoires = lectureTerritoires("data/TerritoiresPetitExemple.txt");
-//		this.cartes = lectureCartesTerritoire("data/CartesTerritoires.txt");
-//		this.continents = lectureContinents("data/Continents.txt");
-//		lectureTerritoiresAdjacents("data/TerritoiresAdjacents.txt");
+		this.cartes = lectureCartesTerritoire("data/CartesTerritoiresPetitExemple.txt");
+		this.continents = lectureContinents("data/ContinentsPetitExemple.txt");
+		lectureTerritoiresAdjacents("data/TerritoiresAdjacentsPetitExemple.txt");
 		
 		// Position aléatoire des joueurs, pour établir l'ordre du jeu / mélange des cartes
 		Collections.shuffle(this.joueurs);
