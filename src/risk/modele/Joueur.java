@@ -152,4 +152,12 @@ public class Joueur {
 	public void ajouterTerritoire(Territoire territoire) {
 		this.territoires.add(territoire);
 	}
+	
+	public void calculNbRegimentsTotaux(ArrayList<Territoire> territoires) {
+		
+	}
+	
+	public void attaquer(Territoire territAttaq, Territoire territDef, int nbRegiments) {
+		
+	}
 }

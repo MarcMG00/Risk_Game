@@ -244,6 +244,30 @@ public class Risk {
 		}
 	}
 	
+	// Méthodes du jeu
+	// Afficher les territoires adjacents qui ne sont pas possédés par le joueur en question, des territoires possédés par ce joueur
+	public void afficherTerritoiresEnnemis(Joueur joueur) {
+		
+		ArrayList<Territoire> TerritoireAdjacents = new ArrayList<Territoire>();
+		
+		// Obtention de tous les territoires
+		for(Territoire territ : joueur.getTerritoires()){
+			for (Territoire tAdj : territ.getTerritoiresAdjacents().getTerritoiresAdjacents()) {
+				if(!TerritoireAdjacents.contains(tAdj)) {
+					TerritoireAdjacents.add(tAdj);
+				}
+			}
+		}
+		
+		// On enlève les territoires adjacents possédés par le joueur
+		for (int i = 0; i < TerritoireAdjacents.size(); i ++) {
+			if (joueur.getTerritoires().contains(TerritoireAdjacents.get(i))) {
+				TerritoireAdjacents.remove(i);
+			}
+		}
+		System.out.println("Liste des territoires que " + joueur.getNom() +  " peut attaquer : " + TerritoireAdjacents);
+	}
+	
 	public void lancerPartie() {
 		// Vérification des données de la lecture des fichiers
 //		ArrayList<Territoire> territoiresF = lectureTerritoires("data/Territoires.txt");
@@ -393,6 +417,8 @@ public class Risk {
 		System.out.println("Vous avez fini de placer les régiments de départ. Procédons au jeu JEJEJE");
 		// Début du jeu : un jeu ne fini que lorsqu'il y a un joueur dans la liste de joueurs
 		
+		// Au moment d'initaliser les lectures des fichiers, il faut mettre en paramètre le this.territoires, car sinon il y a des duplicatas
+		// A faire le changement sur develop
 	}
 	
 }
