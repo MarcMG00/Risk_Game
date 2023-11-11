@@ -178,10 +178,21 @@ public class Joueur {
 		}
 	}
 	
-	public void attaquer(Territoire territAttaq, Territoire territDef, int nbRegiments) {
+	public void attaquer(int numTerritoireAtq, int numTerritoireDef, int nbRegiments) {
 		// Variables pour stocker les lancées de dé des joueurs
 		ArrayList<Integer> numerosDeAttaquant = new ArrayList<Integer>();
 		ArrayList<Integer> numerosDeDefenseur = new ArrayList<Integer>();
+		Territoire territAttaq = new Territoire(0, "");
+		Territoire territDef = new Territoire(0, "");
+		
+		for(Territoire t : this.territoires) {
+			if(t.getNumTerritoire() == numTerritoireAtq) {
+				territAttaq = t;
+			}
+			else if(t.getNumTerritoire() == numTerritoireDef) {
+				territDef = t;
+			}
+		}
 		
 		// Si le nombre de régiments du défenseur de ce territoire est supérieur à 1, on lui donne le choix de saisir le nombre de régiments pour la défense
 		if(territDef.getRegiments() > 1) {
@@ -368,15 +379,26 @@ public class Joueur {
 				this.ajouterTerritoire(territDef);
 			}
 			
-			//On prend toutes les cartes du défenseur et on les ajoute à celle de l'attaquant s'il n'a plus de régiments
+			// Si le joueur défenseur n'a plus de régiments, on prend toutes les cartes du défenseur et on les ajoute à celle de l'attaquant s'il n'a plus de régiments
 			if(territDef.getJoueurPossedantTerritoire().getNbRegiments() == 0) {
-				if(territDef.getJoueurPossedantTerritoire().getCartesTerritoires().size() >= 1) {
-					for(int i = 0; i < territDef.getJoueurPossedantTerritoire().getCartesTerritoires().size(); i++) {
-						this.ajouterCarteTerritoire(territDef.getJoueurPossedantTerritoire().getCartesTerritoires().get(i));
-					}
-					territDef.getJoueurPossedantTerritoire().setCartesTerritoires(null);
-				}
+//				if(territDef.getJoueurPossedantTerritoire().getCartesTerritoires().size() >= 1) {
+//					for(int i = 0; i < territDef.getJoueurPossedantTerritoire().getCartesTerritoires().size(); i++) {
+//						this.ajouterCarteTerritoire(territDef.getJoueurPossedantTerritoire().getCartesTerritoires().get(i));
+//					}
+//					territDef.getJoueurPossedantTerritoire().setCartesTerritoires(null);
+//				}
+				this.recevoirCartesTerritoires(territDef.getJoueurPossedantTerritoire());
 			}
+			// Ou si le joueur attaquant n'a plus de régiments, on fait la même chose, mais en donnant les cartes au défenseur
+			else if(this.getNbRegiments() == 0) {
+//				if(this.getCartesTerritoires().size() >= 1) {
+//					for(int i = 0; i < this.getCartesTerritoires().size(); i++) {
+//						territDef.getJoueurPossedantTerritoire().ajouterCarteTerritoire(this.getCartesTerritoires().get(i));
+//					}
+//					this.setCartesTerritoires(null);
+				territDef.getJoueurPossedantTerritoire().recevoirCartesTerritoires(territAttaq.getJoueurPossedantTerritoire());
+//				}
+			}			
 		}
 	}
 	
@@ -446,6 +468,16 @@ public class Joueur {
 		
 		System.out.println("L'attaquant a perdu " + countAt + " régiments. " + " Nombre de régiments restants à l'attaquant provenant du territoire " + territAttaq.getNomTerritoire() + " : " + territAttaq.getRegiments());
 		System.out.println("Le défenseur a perdu " + countDf + " régiments. " + " Nombre de régiments restants au défenseur dans le territoire " + territDef.getNomTerritoire() + " : " +  territDef.getRegiments());
+	}
+	
+	// Méthode pour donner toutes les cartes, une fois perdus tous les territoires
+	public void recevoirCartesTerritoires(Joueur joueurPerdant) {
+		if(joueurPerdant.getCartesTerritoires().size() >= 1) {
+			for(int i = 0; i < joueurPerdant.getCartesTerritoires().size(); i++) {
+				this.ajouterCarteTerritoire(joueurPerdant.getCartesTerritoires().get(i));
+			}
+			joueurPerdant.setCartesTerritoires(null);
+		}
 	}
 	
 }
