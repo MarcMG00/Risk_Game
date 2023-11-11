@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
+import risk.model.action.Attaquer;
+
 
 public class Risk {
     private int numTour;
@@ -274,12 +276,12 @@ public class Risk {
 	}
 	
 	// Affiche les territoires possédés par le joueur pour attaquer le territoire souhaité
-	public ArrayList<Territoire> verifierAdjacenceTerritoireEnnemi(ArrayList<Territoire> territs, Joueur joueur, int numTerritoireAattaquer) {
+	public ArrayList<Territoire> verifierAdjacenceTerritoireEnnemi(Joueur joueur, int numTerritoireAattaquer) {
 		ArrayList<Territoire> appartenanceTerritoiresAdj = new ArrayList<Territoire>();
 //		this.territoires = lectureTerritoires("data/TerritoiresPetitExemple.txt");
 //		this.lectureTerritoiresAdjacents("data/TerritoiresAdjacentsPetitExemple.txt");
 		
-		for(Territoire t : territs) {
+		for(Territoire t : this.territoiresChoisits) {
 			// On ajoute que les territoires adjacents possédés par le joueur et avec un nombre de régiments supérieur à 1
 			if(t.getNumTerritoire() == numTerritoireAattaquer) {
 				for(Territoire tAdj : t.getTerritoiresAdjacents().getTerritoiresAdjacents()) {
@@ -326,7 +328,7 @@ public class Risk {
 			regimentsCorrects = false;
 		}
 		else {
-			for(Territoire t : this.territoires) {
+			for(Territoire t : this.territoiresChoisits) {
 				if(t.getNumTerritoire() == numTerritoire) {
 					if(t.getRegiments() < nbRegiments) {
 						System.out.println("Vous ne possédez pas autant de régiments");
@@ -594,7 +596,7 @@ public class Risk {
 						}
 						
 						// On affiche les territoires adjacents que le joueur possède pour attaquer le territoire saisi auparavant
-						ArrayList<Territoire> appartenanceTerritoiresAdj =  this.verifierAdjacenceTerritoireEnnemi(this.territoiresChoisits, this.joueurs.get(j), numTerritAttaquer);
+						ArrayList<Territoire> appartenanceTerritoiresAdj =  this.verifierAdjacenceTerritoireEnnemi(this.joueurs.get(j), numTerritAttaquer);
 						ArrayList<Integer> numTerritoiresAttaquant = new ArrayList<Integer>();
 						
 						// On ajoute les numéros des territoires adjacents du joueur dans une liste
@@ -627,7 +629,21 @@ public class Risk {
 							}
 						}
 						
-						this.joueurs.get(j).attaquer(numTerritAttaquant, numTerritAttaquer, nbRegimentsAtq);
+						// On recherche les territoires en question pour les passer en paramètres dans la méthode Attaquer
+						Territoire tAttaquant = new Territoire(0, "");
+						Territoire tDefenseur = new Territoire(0, "");
+						for(Territoire t : this.territoiresChoisits) {
+							if(t.getNumTerritoire() == numTerritAttaquant) {
+								tAttaquant = t;
+							}
+							else if(t.getNumTerritoire() == numTerritAttaquer) {
+								tDefenseur = t;
+							}
+						}
+						
+//						this.joueurs.get(j).attaquer(numTerritAttaquant, numTerritAttaquer, nbRegimentsAtq);
+						Attaquer nouvelleAttaque = new Attaquer(tAttaquant, tDefenseur, nbRegimentsAtq);
+						nouvelleAttaque.InicierAttaque();
 					
 					}
 					else {
