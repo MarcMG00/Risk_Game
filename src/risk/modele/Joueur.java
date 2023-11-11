@@ -1,6 +1,8 @@
 package risk.modele;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
 
 public class Joueur {
 	private String nom;
@@ -69,11 +71,11 @@ public class Joueur {
 		this.numFoisEchangesCartes = numFoisEchangesCartes;
 	}
 
-	public boolean isaConqueritEnUntour() {
+	public boolean getAConqueritEnUntour() {
 		return aConqueritEnUntour;
 	}
 
-	public void setaConqueritEnUntour(boolean aConqueritEnUntour) {
+	public void setAConqueritEnUntour(boolean aConqueritEnUntour) {
 		this.aConqueritEnUntour = aConqueritEnUntour;
 	}
 
@@ -152,4 +154,38 @@ public class Joueur {
 	public void ajouterTerritoire(Territoire territoire) {
 		this.territoires.add(territoire);
 	}
+	
+	public void enleverTerritoire(Territoire territoire) {
+		if(this.territoires.contains(territoire)) {
+			this.territoires.remove(territoire);
+		}
+	}
+	
+	public void ajouterCarteTerritoire(Carte_Territoire carte_territoire) {
+		this.cartesTerritoires.add(carte_territoire);
+	}
+	
+	public void enleverCarteTerritoire(Carte_Territoire carte_territoire) {
+		if(this.cartesTerritoires.contains(carte_territoire)) {
+			this.cartesTerritoires.remove(carte_territoire);
+		}
+	}
+	
+	public void calculNbRegimentsTotaux() {
+		this.nbRegiments = 0;
+		for(Territoire t : this.getTerritoires()) {
+			this.nbRegiments += t.getRegiments();
+		}
+	}
+	
+	// Méthode pour donner toutes les cartes, une fois perdus tous les territoires
+	public void recevoirCartesTerritoires(Joueur joueurPerdant) {
+		if(joueurPerdant.getCartesTerritoires().size() >= 1) {
+			for(int i = 0; i < joueurPerdant.getCartesTerritoires().size(); i++) {
+				this.ajouterCarteTerritoire(joueurPerdant.getCartesTerritoires().get(i));
+			}
+			joueurPerdant.setCartesTerritoires(null);
+		}
+	}
+	
 }

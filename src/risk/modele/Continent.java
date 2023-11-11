@@ -2,6 +2,7 @@ package risk.modele;
 
 import java.util.ArrayList;
 
+
 public class Continent {
 	private int numContinent;
 	private String nomContinent;
@@ -31,5 +32,13 @@ public class Continent {
 		return valeurBonus;
 	}
 	
-	
+	// Méthode pour attribuer la valeur bonus au joueur possédant tous les territoires d'un contient
+	public boolean verifierPossessionTousTerritoires(Joueur joueur) {
+    	if (joueur.getTerritoires().containsAll(this.territoires)) {
+    		return true;
+    	}
+    	else {
+    		return false;
+    	}
+	}
 }

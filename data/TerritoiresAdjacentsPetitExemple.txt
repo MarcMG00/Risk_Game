@@ -1,5 +1,5 @@
-Europe de l'Ouest;Grande-Bretagne;Europe du Nord;Europe du Sud;Afrique du Nord
+Europe de l'Ouest;Grande-Bretagne;Europe du Nord
 Grande-Bretagne;Europe de l'Ouest;Islande;Scandinavie;Europe du Nord
-Europe du Nord;Europe de l'Ouest;Grande-Bretagne;Europe du Sud;Scandinavie;Russie
-Islande;Grande-Bretagne;Scandinavie;Groenland
-Scandinavie;Grande-Bretagne;Russie;Islande;Europe du Nord
+Europe du Nord;Europe de l'Ouest;Grande-Bretagne;Scandinavie
+Islande;Grande-Bretagne;Scandinavie
+Scandinavie;Grande-Bretagne;Islande;Europe du Nord
