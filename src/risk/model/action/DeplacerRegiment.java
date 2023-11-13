@@ -30,7 +30,9 @@ public class DeplacerRegiment {
 			for(int j = 0; j < territDepart.getJoueurPossedantTerritoire().getTerritoires().size(); j++) {
 				for(int i = 0; i < territDepart.getTerritoiresAdjacents().getTerritoiresAdjacents().size(); i++) {
 					if(territDepart.getJoueurPossedantTerritoire().getTerritoires().get(j).equals(territDepart.getTerritoiresAdjacents().getTerritoiresAdjacents().get(i))) {
-						System.out.println("Territoire : " + territDepart.getTerritoiresAdjacents().getTerritoiresAdjacents().get(i).getNumTerritoire() + " - " + territDepart.getTerritoiresAdjacents().getTerritoiresAdjacents().get(i).getNomTerritoire() + ", nombre de régiments : " + territDepart.getJoueurPossedantTerritoire().getTerritoires().get(j).getRegiments());
+						System.out.println("Territoire : " + territDepart.getTerritoiresAdjacents().getTerritoiresAdjacents().get(i).getNumTerritoire() + " - " 
+								+ territDepart.getTerritoiresAdjacents().getTerritoiresAdjacents().get(i).getNomTerritoire() + ", nombre de régiments : "
+								+ territDepart.getJoueurPossedantTerritoire().getTerritoires().get(j).getRegiments());
 					}
 				}
 			}

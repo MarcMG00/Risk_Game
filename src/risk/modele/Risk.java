@@ -521,6 +521,7 @@ public class Risk {
 				    			    	
 				    	this.montrerTerritoiresJoueur(this.joueurs.get(j));
 				    	
+				    	// Saisir le territoire de départ parmis ceux proposés
 				    	System.out.println("Saisissez un de vos territoires de départ : ");
 				    	int terrDept = myObj.nextInt();
 				    	myObj.useDelimiter(";|\r?\n|\r");
@@ -534,12 +535,14 @@ public class Risk {
 				    	DeplacerRegiment deployerReg = new DeplacerRegiment(tARetournerDpt, nbReg);
 				    	boolean demandeDeploiementRegiments = deployerReg.deplacerRegiment();
 				    	
+				    	// On affiche les territoires adjacents au territoire de départ
 				    	if(demandeDeploiementRegiments == true) {
 					    	System.out.println("Saisissez le territoire qui suit : ");
 					    	int terrQuiSuit = myObj.nextInt();
 					    	myObj.useDelimiter(";|\r?\n|\r");
 					    	
 					    	boolean encoreUnAutreTerritoire = true;
+					    	// Si on veut continuer à déplacer les régiments, on propose les territoires adjacents de chaque territoire nouveau choisi
 					    	while(encoreUnAutreTerritoire == true) {
 						    	System.out.println("Voulez-vous traverser encore d'autres territoires ? (1 (oui), 2 (non))");
 						    	dplReg = myObj.nextInt();
@@ -556,6 +559,7 @@ public class Risk {
 						    		myObj.useDelimiter(";|\r?\n|\r");
 						    	}
 						    	
+						    	// Sinon, on place les régiments au dernier territoire saisit
 						    	else {
 						    		Territoire tARetournerFin = this.retourneTerritoire(terrQuiSuit);
 						    		tARetournerFin.setRegiments(tARetournerFin.getRegiments() + nbReg);
