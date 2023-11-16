@@ -28,7 +28,6 @@ public class Joueur {
 		this.nbRegimentsRecusParTour = 0;
 		this.score = 0;
 		this.regimentsAdditionnels = 0;
-		this.numFoisEchangesCartes = 0;
 		this.aConqueritEnUntour = false;
 		this.nbDefenses = 0;
 		this.nbAttaques = 0;
