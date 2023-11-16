@@ -11,6 +11,7 @@ public class Joueur {
 	private int nbRegimentsRecusParTour;
 	private int score;
 	private int regimentsAdditionnels;
+	private int regimentsChangementCartes6Tour;
 	private int numFoisEchangesCartes;
 	private boolean aConqueritEnUntour;
 	private int nbDefenses;
@@ -28,6 +29,7 @@ public class Joueur {
 		this.nbRegimentsRecusParTour = 0;
 		this.score = 0;
 		this.regimentsAdditionnels = 0;
+		this.regimentsChangementCartes6Tour = 0;
 		this.numFoisEchangesCartes = 0;
 		this.aConqueritEnUntour = false;
 		this.nbDefenses = 0;
@@ -61,6 +63,14 @@ public class Joueur {
 
 	public void setRegimentsAdditionnels(int regimentsAdditionnels) {
 		this.regimentsAdditionnels = regimentsAdditionnels;
+	}
+
+	public int getRegimentsChangementCartes6Tour() {
+		return regimentsChangementCartes6Tour;
+	}
+
+	public void setRegimentsChangementCartes6Tour(int regimentsChangementCartes6Tour) {
+		this.regimentsChangementCartes6Tour = regimentsChangementCartes6Tour;
 	}
 
 	public int getNumFoisEchangesCartes() {
@@ -187,5 +197,4 @@ public class Joueur {
 			joueurPerdant.setCartesTerritoires(null);
 		}
 	}
-	
 }
