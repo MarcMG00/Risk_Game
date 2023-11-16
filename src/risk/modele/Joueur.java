@@ -30,7 +30,6 @@ public class Joueur {
 		this.score = 0;
 		this.regimentsAdditionnels = 0;
 		this.regimentsChangementCartes6Tour = 0;
-		this.numFoisEchangesCartes = 0;
 		this.aConqueritEnUntour = false;
 		this.nbDefenses = 0;
 		this.nbAttaques = 0;
@@ -188,7 +187,7 @@ public class Joueur {
 		}
 	}
 	
-	// Méthode pour donner toutes les cartes, une fois perdus tous les territoires
+	// Mï¿½thode pour donner toutes les cartes, une fois perdus tous les territoires
 	public void recevoirCartesTerritoires(Joueur joueurPerdant) {
 		if(joueurPerdant.getCartesTerritoires().size() >= 1) {
 			for(int i = 0; i < joueurPerdant.getCartesTerritoires().size(); i++) {
