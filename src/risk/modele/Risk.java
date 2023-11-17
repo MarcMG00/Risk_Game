@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Scanner;
 
 import risk.model.action.Attaquer;
+import risk.model.action.DeplacerRegiment;
 
 
 public class Risk {
@@ -16,6 +17,7 @@ public class Risk {
     private ArrayList<Carte_Territoire> cartes;
 	private ArrayList<Continent> continents;
 	private ArrayList<Territoire> territoires;
+	// Liste qui remplace les territoires (de dessus), lors des choix des territoires au début du jeu
 	private ArrayList<Territoire> territoiresChoisits;
 	
 	public Risk() {
@@ -349,10 +351,10 @@ public class Risk {
 		return regimentsCorrects;
 	}
 	
-	
+
+	// DEBUT DU JEU
 	public void lancerPartie() {
 
-		// START GAME
 		// Initialisation des listes du jeu
 		this.territoires = lectureTerritoires("data/TerritoiresPetitExemple.txt");
 		this.cartes = lectureCartesTerritoire("data/CartesTerritoiresPetitExemple.txt");
@@ -374,7 +376,7 @@ public class Risk {
 						System.out.println(territoire.getNumTerritoire() + " - " + territoire.getNomTerritoire());
 					}
 					
-					System.out.println(joueur.getNom() + " choisit un territoire parmis ceux proposés ci-dessus. Ecrit seulement le numéro. S'il n'y a plus de territoires, écrit aléatoirement un numéro (rien ne se produira)");
+					System.out.println(joueur.getNom() + " choisit un territoire parmis ceux proposés ci-dessus. Ecrit seulement le numéro");
 					Scanner sc = new Scanner(System.in);
 					int numTerritoire = sc.nextInt();
 					sc.useDelimiter(";|\r?\n|\r");
@@ -505,6 +507,77 @@ public class Risk {
 						attaquer = false;
 					}
 		    	}
+		    	
+		    	// Déplacement des régiments
+				boolean continuerTraverssee = true;
+				while(continuerTraverssee == true) {
+					Scanner myObj = new Scanner(System.in);
+					
+				    System.out.println("Voulez-vous déployer vos régiments ? (1 (oui), 2 (non))");
+				    int dplReg = myObj.nextInt();
+				    myObj.useDelimiter(";|\r?\n|\r");
+				    
+				    if(dplReg == 1) {
+				    			    	
+				    	this.montrerTerritoiresJoueur(this.joueurs.get(j));
+				    	
+				    	// Saisir le territoire de départ parmis ceux proposés
+				    	System.out.println("Saisissez un de vos territoires de départ : ");
+				    	int terrDept = myObj.nextInt();
+				    	myObj.useDelimiter(";|\r?\n|\r");
+				    	
+				    	Territoire tARetournerDpt = this.retourneTerritoire(terrDept);
+				    	
+				    	System.out.println("Saisissez le nombre de régiments depuis lequel vous partez : ");
+				    	int nbReg = myObj.nextInt();
+				    	myObj.useDelimiter(";|\r?\n|\r");
+				    	
+				    	DeplacerRegiment deployerReg = new DeplacerRegiment(tARetournerDpt, nbReg);
+				    	boolean demandeDeploiementRegiments = deployerReg.deplacerRegiment();
+				    	
+				    	// On affiche les territoires adjacents au territoire de départ
+				    	if(demandeDeploiementRegiments == true) {
+					    	System.out.println("Saisissez le territoire qui suit : ");
+					    	int terrQuiSuit = myObj.nextInt();
+					    	myObj.useDelimiter(";|\r?\n|\r");
+					    	
+					    	boolean encoreUnAutreTerritoire = true;
+					    	// Si on veut continuer à déplacer les régiments, on propose les territoires adjacents de chaque territoire nouveau choisi
+					    	while(encoreUnAutreTerritoire == true) {
+						    	System.out.println("Voulez-vous traverser encore d'autres territoires ? (1 (oui), 2 (non))");
+						    	dplReg = myObj.nextInt();
+						    	myObj.useDelimiter(";|\r?\n|\r");
+						    	
+						    	if(dplReg == 1) {
+						    		
+						    		Territoire territSuivant = this.retourneTerritoire(terrQuiSuit);
+						    		DeplacerRegiment deployerRegSuiv = new DeplacerRegiment(territSuivant, nbReg);
+						    		deployerRegSuiv.deplacerRegiment();
+						    		
+						    		System.out.println("Saisissez un de vos suivants territoires : ");
+						    		terrQuiSuit = myObj.nextInt();
+						    		myObj.useDelimiter(";|\r?\n|\r");
+						    	}
+						    	
+						    	// Sinon, on place les régiments au dernier territoire saisit
+						    	else {
+						    		Territoire tARetournerFin = this.retourneTerritoire(terrQuiSuit);
+						    		tARetournerFin.setRegiments(tARetournerFin.getRegiments() + nbReg);
+							    	tARetournerDpt.setRegiments(tARetournerDpt.getRegiments() - nbReg);
+							    	encoreUnAutreTerritoire = false;
+						    	}
+					    	}
+					    	
+					    	continuerTraverssee = false;
+					    }
+					    else {
+					    	continuerTraverssee = true;
+					    }
+			    	}
+			    	else {
+			    		continuerTraverssee = false;
+			    	}
+				}
 		    }
 		}
 	}
@@ -520,6 +593,12 @@ public class Risk {
 			}
 		}
 		return territoireARetourner;
+	}
+	
+	public void montrerTerritoiresJoueur(Joueur joueur) {
+		for(Territoire t : joueur.getTerritoires()) {
+			System.out.println(t.getNumTerritoire() + " - " + t.getNomTerritoire() + " avec " + t.getRegiments() + " régiments");
+		}
 	}
 	
 	// Permet de placer les régiments à chaque tour
