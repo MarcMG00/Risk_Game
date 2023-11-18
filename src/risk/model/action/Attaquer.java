@@ -106,8 +106,7 @@ public class Attaquer {
 			if(territDefenseur.getRegiments() == 0) {
 				// Dans ce cas, le défenseur n'a plus de régiments dans le territoire, donc l'attaquant a conquérit un territoire,
 				// ce qui lui permettra de recevoir une carte territoire
-				boolean vrai = true;
-				territAttaquant.getJoueurPossedantTerritoire().setAConqueritEnUntour(vrai);
+				territAttaquant.getJoueurPossedantTerritoire().setAConqueritEnUntour(true);
 			
 				territAttaquant.getJoueurPossedantTerritoire().setNbTerritoiresConquis(territAttaquant.getJoueurPossedantTerritoire().getNbTerritoiresConquis() + 1);
 				System.out.println("Le joueur " + territAttaquant.getJoueurPossedantTerritoire().getNom() + " a conquérit le territoire : " + territDefenseur.getNomTerritoire());
@@ -119,11 +118,11 @@ public class Attaquer {
 			
 			// Si le joueur défenseur n'a plus de régiments, on prend toutes les cartes du défenseur et on les ajoute à celle de l'attaquant s'il n'a plus de régiments
 			if(territDefenseur.getJoueurPossedantTerritoire().getNbRegiments() == 0) {
-				territDefenseur.getJoueurPossedantTerritoire().recevoirCartesTerritoires(territDefenseur.getJoueurPossedantTerritoire());
+				this.recevoirCartesTerritoires(territDefenseur.getJoueurPossedantTerritoire());
 			}
 			// Ou si le joueur attaquant n'a plus de régiments, on fait la même chose, mais en donnant les cartes au défenseur
 			else if(territAttaquant.getJoueurPossedantTerritoire().getNbRegiments() == 0) {
-				territDefenseur.getJoueurPossedantTerritoire().recevoirCartesTerritoires(territAttaquant.getJoueurPossedantTerritoire());
+				this.recevoirCartesTerritoires(territAttaquant.getJoueurPossedantTerritoire());
 			}
 		}
 	}
