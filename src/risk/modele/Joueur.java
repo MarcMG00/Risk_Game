@@ -176,14 +176,4 @@ public class Joueur {
 			this.nbRegiments += t.getRegiments();
 		}
 	}
-	
-	// M�thode pour donner toutes les cartes, une fois perdus tous les territoires
-	public void recevoirCartesTerritoires(Joueur joueurPerdant) {
-		if(joueurPerdant.getCartesTerritoires().size() >= 1) {
-			for(int i = 0; i < joueurPerdant.getCartesTerritoires().size(); i++) {
-				this.ajouterCarteTerritoire(joueurPerdant.getCartesTerritoires().get(i));
-			}
-			joueurPerdant.setCartesTerritoires(null);
-		}
-	}
 }

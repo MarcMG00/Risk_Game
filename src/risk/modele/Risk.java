@@ -76,7 +76,7 @@ public class Risk {
 	}
 
 	// Lecture du fichier Territoires.txt pour récupérer tous les territoires
-	public ArrayList<Territoire> lectureTerritoires(String fileName) {
+	public void lectureTerritoires(String fileName) {
 		FileReader fileReader = null;
 	    BufferedReader bufferedReader = null;
 	    
@@ -110,12 +110,11 @@ public class Risk {
 				System.out.println("Exception survenue ï¿½ la fermeture du fichier : " + e.getMessage());
 			}
 		}
-		return this.territoires;
+//		return this.territoires;
 	}
 	
 	// Lecture du fichier CartesTerritoires.txt pour récupérer toutes les cartes
-	public ArrayList<Carte_Territoire> lectureCartesTerritoire(String fileName) {
-//		ArrayList<Territoire> territoiresL = lectureTerritoires("data/Territoires.txt");
+	public void lectureCartesTerritoire(String fileName) {
 		
 		FileReader fileReader = null;
 	    BufferedReader bufferedReader = null;
@@ -151,12 +150,51 @@ public class Risk {
 				System.out.println("Exception survenue ï¿½ la fermeture du fichier : " + e.getMessage());
 			}
 		}
-		return this.cartes;
+//		return this.cartes;
 	}
 	
+	// Lecture du fichier CartesTerritoires.txt pour récupérer toutes les cartes, mais qui sont utilisées pour les échangements dans le jeu
+		public void lectureCartesRepTerritoire(String fileName) {
+			
+			FileReader fileReader = null;
+		    BufferedReader bufferedReader = null;
+		    
+		    try {
+				fileReader = new FileReader(fileName);
+				bufferedReader = new BufferedReader(fileReader);
+				String ligne;
+				while ((ligne = bufferedReader.readLine()) != null) {
+					String[] cartesTerritoire = ligne.split(";");
+					for(int iTerrit = 0; iTerrit < this.territoires.size(); iTerrit++) {
+						// On transforme les string en objets Territoire, si le nom est trouvé, alors on ajoute le territoire à sa carte correspondante
+						if(this.territoires.get(iTerrit).getNomTerritoire().equals(cartesTerritoire[1])) {
+							this.cartesEnCoursDeJeu.add(new Carte_Territoire(Integer.parseInt(cartesTerritoire[0]), this.territoires.get(iTerrit), cartesTerritoire[2]));
+							// Problèmes de duplications, j'ai mis ainsi un break
+							break;
+						}
+					}
+				}
+			}
+		    catch (IOException e) {
+				System.out.println("Exception ï¿½ la lecture du fichier : " + e.getMessage());
+			}
+		    finally {
+				try {
+					if (fileReader != null) {
+						fileReader.close();
+					}
+					if (bufferedReader != null) {
+						bufferedReader.close();
+					}
+				} catch (IOException e) {
+					System.out.println("Exception survenue ï¿½ la fermeture du fichier : " + e.getMessage());
+				}
+			}
+//			return this.cartes;
+		}
+	
 	// Lecture du fichier Continents.txt pour récupérer tous les continents
-	public ArrayList<Continent> lectureContinents(String fileName) {
-//		ArrayList<Territoire> territoiresL = lectureTerritoires("data/Territoires.txt");
+	public void lectureContinents(String fileName) {
 		ArrayList<String> territoiresContinentAReinitialiserStr = new ArrayList<String>();
 		ArrayList<Territoire> territoiresContinentAReinitialiserT = new ArrayList<Territoire>();
 		
@@ -201,12 +239,11 @@ public class Risk {
 				System.out.println("Exception survenue ï¿½ la fermeture du fichier : " + e.getMessage());
 			}
 		}
-		return this.continents;
+//		return this.continents;
 	}
 	
 	// Lecture du fichier TerritoiresAdjacents.txt pour récupérer tous les territoires adjacents de chaque territoire
 	public void lectureTerritoiresAdjacents(String fileName) {
-//		ArrayList<Territoire> territoiresL = lectureTerritoires("data/Territoires.txt");
 		ArrayList<Territoire> territoiresAReinitialiserT = new ArrayList<Territoire>();
 		ArrayList<String> territoiresAReinitialiserStr = new ArrayList<String>();
 		
@@ -463,16 +500,23 @@ public class Risk {
 		
 	// Permet de distribuer des cartes à un joueur s'il a conquérit au moins un territoire dans une attaque	
 	public void DistribuerCarte(Joueur joueur) {
-		//joueur.getCartesTerritoires().add(this.cartes.get(0));
+		// On ajoute la carte dans la liste de cartes du joueur, puis on l'enlève du paquet du jeu
+		joueur.getCartesTerritoires().add(this.cartesEnCoursDeJeu.get(0));
+		this.cartesEnCoursDeJeu.remove(this.getCartesEnCoursDeJeu().get(0));
+	}
+	
+	public void AjouterCarteAuPaquet(Carte_Territoire carte) {
+		this.cartesEnCoursDeJeu.add(carte);
 	}
 	
 	// DEBUT DU JEU
 	public void lancerPartie() {
 
 		// Initialisation des listes du jeu
-		this.territoires = lectureTerritoires("data/TerritoiresPetitExemple.txt");
-		this.cartes = lectureCartesTerritoire("data/CartesTerritoiresPetitExemple.txt");
-		this.continents = lectureContinents("data/ContinentsPetitExemple.txt");
+		lectureTerritoires("data/TerritoiresPetitExemple.txt");
+		lectureCartesTerritoire("data/CartesTerritoiresPetitExemple.txt");
+		lectureCartesRepTerritoire("data/CartesTerritoiresPetitExemple.txt");
+		lectureContinents("data/ContinentsPetitExemple.txt");
 		this.lectureTerritoiresAdjacents("data/TerritoiresAdjacentsPetitExemple.txt");
 		
 		// Position aléatoire des joueurs, pour établir l'ordre du jeu / mélange des cartes
@@ -539,7 +583,7 @@ public class Risk {
 			Scanner sc = new Scanner(System.in);
 			
 		    for (int j = 0; j < this.joueurs.size(); j++) {
-		    	System.out.println(this.joueurs.get(j) + " C'est votre tour :");
+		    	System.out.println(this.joueurs.get(j).getNom() + " C'est votre tour :");
 		    	
 		    	boolean sortirEchangement = false;
 		    	
@@ -586,7 +630,17 @@ public class Risk {
 								
 								boolean echangeEffectue = echanger.EchangerCartes(carte1, carte2, carte3);
 								
+								// On s'assure de la validité de l'échangement des cartes (pour éviter des erreurs)
 								if(echangeEffectue == true) {
+									// On enlève les cartes du joueur, puis on les ajoute dans le paquet de cartes du jeu
+									this.joueurs.get(j).enleverCarteTerritoire(carte1);
+									this.joueurs.get(j).enleverCarteTerritoire(carte2);
+									this.joueurs.get(j).enleverCarteTerritoire(carte3);
+									
+									this.AjouterCarteAuPaquet(carte1);
+									this.AjouterCarteAuPaquet(carte2);
+									this.AjouterCarteAuPaquet(carte3);
+									
 									sortirEchangement = false;
 								}
 								else {
@@ -676,6 +730,11 @@ public class Risk {
 					else {
 						attaquer = false;
 					}
+		    	}
+		    	// On regarde si le joueur a conquérit un territoire pendant son/ses attaques
+		    	if(this.joueurs.get(j).getAConqueritEnUntour() == true) {
+		    		this.DistribuerCarte(this.joueurs.get(j));
+		    		this.joueurs.get(j).setAConqueritEnUntour(false);
 		    	}
 		    	
 		    	// Déplacement des régiments
@@ -791,6 +850,18 @@ public class Risk {
 							Carte_Territoire carte3 = this.retourneCarteTerritoire(numCarte3);
 							
 							boolean echangeEffectue = echanger.EchangerCartes(carte1, carte2, carte3);
+							
+							// On s'assure que l'échangement de cartes a eu lieu (pour éviter des erreurs)
+							if(echangeEffectue == true) {
+								// On enlève les cartes du joueur, puis on les ajoute dans le paquet de cartes du jeu
+								this.joueurs.get(j).enleverCarteTerritoire(carte1);
+								this.joueurs.get(j).enleverCarteTerritoire(carte2);
+								this.joueurs.get(j).enleverCarteTerritoire(carte3);
+								
+								this.AjouterCarteAuPaquet(carte1);
+								this.AjouterCarteAuPaquet(carte2);
+								this.AjouterCarteAuPaquet(carte3);
+							}
 						}
 						else {
 							// Rien à faire
