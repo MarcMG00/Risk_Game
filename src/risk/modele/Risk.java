@@ -20,6 +20,7 @@ public class Risk {
 	private ArrayList<Territoire> territoires;
 	// Liste qui remplace les territoires (de dessus), lors des choix des territoires au début du jeu
 	private ArrayList<Territoire> territoiresChoisits;
+	private ArrayList<Carte_Territoire> cartesEnCoursDeJeu;
 	
 	public Risk() {
 		this.joueurs = new ArrayList<Joueur>();
@@ -27,6 +28,7 @@ public class Risk {
 		this.continents = new ArrayList<Continent>();
 		this.territoires = new ArrayList<Territoire>();
 		this.territoiresChoisits = new ArrayList<Territoire>();
+		this.cartesEnCoursDeJeu = new ArrayList<Carte_Territoire>();
 	}
 	
 	public ArrayList<Joueur> getJoueurs() {
@@ -63,6 +65,14 @@ public class Risk {
 
 	public void setTerritoiresChoisits(ArrayList<Territoire> territoiresChoisits) {
 		this.territoiresChoisits = territoiresChoisits;
+	}
+
+	public ArrayList<Carte_Territoire> getCartesEnCoursDeJeu() {
+		return cartesEnCoursDeJeu;
+	}
+
+	public void setCartesEnCoursDeJeu(ArrayList<Carte_Territoire> cartesEnCoursDeJeu) {
+		this.cartesEnCoursDeJeu = cartesEnCoursDeJeu;
 	}
 
 	// Lecture du fichier Territoires.txt pour récupérer tous les territoires
