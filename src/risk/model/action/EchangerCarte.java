@@ -1,21 +1,18 @@
 package risk.model.action;
 
+import java.util.ArrayList;
+
 import risk.modele.Carte_Territoire;
 import risk.modele.Joueur;
+import risk.modele.Territoire;
 
 public class EchangerCarte {
 	private Joueur joueur;
 	private int RegimentsSuppSixEchange;
 	private int numFoisEchangeCarte;
-	private Carte_Territoire carte1;
-	private Carte_Territoire carte2;
-	private Carte_Territoire carte3;
 	
-	public EchangerCarte(Joueur joueur, Carte_Territoire carte1, Carte_Territoire carte2, Carte_Territoire carte3) {
+	public EchangerCarte(Joueur joueur) {
 		this.joueur = joueur;
-		this.carte1 = carte1;
-		this.carte2 = carte2;
-		this.carte3 = carte3;
 		this.RegimentsSuppSixEchange = 0;
 		this.numFoisEchangeCarte = 0;
 	}
@@ -36,17 +33,12 @@ public class EchangerCarte {
 		this.numFoisEchangeCarte = numFoisEchangeCarte;
 	}
 
-	public boolean EchnagerCartes() {
-		boolean autoriserEchange = true;
+	public boolean EchangerCartes(Carte_Territoire carte1, Carte_Territoire carte2, Carte_Territoire carte3) {
+		boolean echangement = true;
+		
 		if(!joueur.getCartesTerritoires().contains(carte1) || !joueur.getCartesTerritoires().contains(carte2) || !joueur.getCartesTerritoires().contains(carte3)) {
 			System.out.println(joueur.getNom() + " Au moins une des cartes que vous voulez échanger, vous ne la possédez pas");
-			autoriserEchange = false;
-		}
-		else if(!((carte1.getTypeRegiment() == carte2.getTypeRegiment()) && (carte1.getTypeRegiment() == carte3.getTypeRegiment()) && (carte2.getTypeRegiment() == carte3.getTypeRegiment())) ||
-				!((carte1.getTypeRegiment() != carte2.getTypeRegiment()) && (carte1.getTypeRegiment() != carte3.getTypeRegiment()) && (carte2.getTypeRegiment() != carte3.getTypeRegiment()))) {
-			System.out.println(joueur.getNom() + " Soit vous n'avez pas les 3 cartes ayant un même type de régiment différent, soit vous en avez que deux qui en ont un même type");
-			System.out.println("Pour rappel, il faut avoir soit les 3 cartes avec un même type de régiment, soit elles ont chacune un type de régiment différent");
-			autoriserEchange = false;
+			echangement = false;
 		}
 		else {
 			joueur.setNumFoisEchangesCartes(joueur.getNumFoisEchangesCartes() + 1);
@@ -54,17 +46,17 @@ public class EchangerCarte {
 			for(Carte_Territoire ct : joueur.getCartesTerritoires()) {
 				if(ct.getTerritoire().equals(carte1.getTerritoire())) {
 					ct.getTerritoire().setRegiments(ct.getTerritoire().getRegiments() + 2);
-					System.out.println(joueur.getNom() + " Vous possédez le territoire de la carte " + carte1.getTerritoire().getNomTerritoire() + ", 2 régiments ont été placés sur ce régiment");
+					System.out.println(joueur.getNom() + " Vous possédez le territoire de la carte " + carte1.getTerritoire().getNomTerritoire() + ", 2 régiments ont été placés sur ce territoire");
 					joueur.calculNbRegimentsTotaux();
 				}
 				if(ct.getTerritoire().equals(carte2.getTerritoire())) {
 					ct.getTerritoire().setRegiments(ct.getTerritoire().getRegiments() + 2);
-					System.out.println(joueur.getNom() + " Vous possédez le territoire de la carte " + carte2.getTerritoire().getNomTerritoire() + ", 2 régiments ont été placés sur ce régiment");
+					System.out.println(joueur.getNom() + " Vous possédez le territoire de la carte " + carte2.getTerritoire().getNomTerritoire() + ", 2 régiments ont été placés sur ce territoire");
 					joueur.calculNbRegimentsTotaux();
 				}
 				if(ct.getTerritoire().equals(carte3.getTerritoire())) {
 					ct.getTerritoire().setRegiments(ct.getTerritoire().getRegiments() + 2);
-					System.out.println(joueur.getNom() + " Vous possédez le territoire de la carte " + carte3.getTerritoire().getNomTerritoire() + ", 2 régiments ont été placés sur ce régiment");
+					System.out.println(joueur.getNom() + " Vous possédez le territoire de la carte " + carte3.getTerritoire().getNomTerritoire() + ", 2 régiments ont été placés sur ce territoire");
 					joueur.calculNbRegimentsTotaux();
 				}
 			}
@@ -102,11 +94,86 @@ public class EchangerCarte {
 			// On augmente le numéro d'échange de cartes
 			this.numFoisEchangeCarte ++;
 		}
-		return autoriserEchange;
+		return echangement;
 	}
+	
+	// Verifie si le joueur possède de cartes potentielles pour échanger
+		public boolean VerificationEchangeCartes() {
+			boolean echangePossible = false;
+			int nbSoldat = 0;
+			ArrayList<Carte_Territoire> cartesSoldat = new ArrayList<Carte_Territoire>();
+			int nbArtillerie = 0;
+			ArrayList<Carte_Territoire> cartesArtillerie = new ArrayList<Carte_Territoire>();
+			int nbCavalier = 0;
+			ArrayList<Carte_Territoire> cartesCavalier = new ArrayList<Carte_Territoire>();
+			
+			for(Carte_Territoire ct : joueur.getCartesTerritoires()) {
+				if(ct.getTypeRegiment().equals("Soldat")) {
+					nbSoldat++;
+					cartesSoldat.add(ct);
+				}
+				else if(ct.getTypeRegiment().equals("Cavalier")) {
+					nbCavalier++;
+					cartesCavalier.add(ct);
+				}
+				else {
+					nbArtillerie++;
+					cartesArtillerie.add(ct);
+				}
+			}
+			
+			// 3 cartes du même régiment
+			if(nbSoldat >= 3) {
+				System.out.println(joueur.getNom() + " Vous possédez au moins 3 cartes avec le régiment 'Soldat' :");
+				for(Carte_Territoire cts : cartesSoldat) {
+					System.out.println("Carte : " + cts.getNumCarte() + " - " + cts.getTerritoire().getNomTerritoire() + " - " + cts.getTypeRegiment());
+				}
+				System.out.println();
+				echangePossible = true;
+			}
+			
+			if(nbCavalier >= 3) {
+				System.out.println(joueur.getNom() + " Vous possédez au moins 3 cartes avec le régiment 'Cavalier' :");
+				for(Carte_Territoire cts : cartesCavalier) {
+					System.out.println("Carte : " + cts.getNumCarte() + " - " + cts.getTerritoire().getNomTerritoire() + " - " + cts.getTypeRegiment());
+				}
+				System.out.println();
+				echangePossible = true;
+			}
+			
+			if(nbArtillerie >= 3) {
+				System.out.println(joueur.getNom() + " Vous possédez au moins 3 cartes avec le régiment 'Artillerie' :");
+				for(Carte_Territoire cts : cartesArtillerie) {
+					System.out.println("Carte : " + cts.getNumCarte() + " - " + cts.getTerritoire().getNomTerritoire() + " - " + cts.getTypeRegiment());
+				}
+				System.out.println();
+				echangePossible = true;
+			}
+			
+			// 3 cartes de régiment différents
+			if(nbSoldat >= 1 && nbCavalier >= 1 && nbArtillerie >= 1) {
+				System.out.println(joueur.getNom() + " Vous possédez au moins 1 carte avec un type de régiment différent chacune : ");
+				System.out.println("Carte : " + this.firstOrDefault(cartesSoldat).getNumCarte() + " - " + this.firstOrDefault(cartesSoldat).getTerritoire().getNomTerritoire() + " - " + this.firstOrDefault(cartesSoldat).getTypeRegiment());
+				System.out.println("Carte : " + this.firstOrDefault(cartesCavalier).getNumCarte() + " - " + this.firstOrDefault(cartesCavalier).getTerritoire().getNomTerritoire() + " - " + this.firstOrDefault(cartesCavalier).getTypeRegiment());
+				System.out.println("Carte : " + this.firstOrDefault(cartesArtillerie).getNumCarte() + " - " + this.firstOrDefault(cartesArtillerie).getTerritoire().getNomTerritoire() + " - " + this.firstOrDefault(cartesArtillerie).getTypeRegiment());
+				echangePossible = true;
+			}
+			
+			// On fait une dernière vérification pour savoir si le joueur a les combinaisons nécessaires pour échanger
+			if(!(nbSoldat >= 1 && nbCavalier >= 1 && nbArtillerie >= 1) && nbSoldat < 3 && nbCavalier < 3 && nbArtillerie < 3) {
+				System.out.println(joueur.getNom() + " Soit vous ne possédez pas au moins une carte de chaque type de régiment, soit vous ne possédez pas au moins 3 cartes du même type de régiment");
+				echangePossible = false;
+			}
+			
+			return echangePossible;
+		}
+	
+   // Retourne la première valeur d'une liste de cartes
+   public Carte_Territoire firstOrDefault(ArrayList<Carte_Territoire> items) {
+        if (items.size() < 1) {
+            return null;
+        }
+        return items.get(0);
+    }
+   
 }
-
-// ajouter les cartes dans le jeu, les supprimer du joueur
-// Mettre boucle while dans le jeu à chaque fois que cette fonction retour ne false en proposant si réellement le joueur veut échanger des cartes
-
-// faire fonction plus avancée qui vérifie si tu peux échanger des cartes ? En parcourant sa liste de cartes ?
