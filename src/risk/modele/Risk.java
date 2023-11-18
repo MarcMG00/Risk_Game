@@ -734,6 +734,7 @@ public class Risk {
 		    	// On regarde si le joueur a conquérit un territoire pendant son/ses attaques
 		    	if(this.joueurs.get(j).getAConqueritEnUntour() == true) {
 		    		this.DistribuerCarte(this.joueurs.get(j));
+		    		// On remet la variable a false pour le prochain tour
 		    		this.joueurs.get(j).setAConqueritEnUntour(false);
 		    	}
 		    	

@@ -118,11 +118,11 @@ public class Attaquer {
 			
 			// Si le joueur défenseur n'a plus de régiments, on prend toutes les cartes du défenseur et on les ajoute à celle de l'attaquant s'il n'a plus de régiments
 			if(territDefenseur.getJoueurPossedantTerritoire().getNbRegiments() == 0) {
-				this.recevoirCartesTerritoires(territDefenseur.getJoueurPossedantTerritoire());
+				this.recevoirCartesTerritoires(territAttaquant.getJoueurPossedantTerritoire(), territDefenseur.getJoueurPossedantTerritoire());
 			}
 			// Ou si le joueur attaquant n'a plus de régiments, on fait la même chose, mais en donnant les cartes au défenseur
 			else if(territAttaquant.getJoueurPossedantTerritoire().getNbRegiments() == 0) {
-				this.recevoirCartesTerritoires(territAttaquant.getJoueurPossedantTerritoire());
+				this.recevoirCartesTerritoires(territDefenseur.getJoueurPossedantTerritoire(), territAttaquant.getJoueurPossedantTerritoire());
 			}
 		}
 	}
@@ -196,10 +196,10 @@ public class Attaquer {
 	}
 	
 	// Méthode pour donner toutes les cartes, une fois perdus tous les territoires
-	public void recevoirCartesTerritoires(Joueur joueurPerdant) {
+	public void recevoirCartesTerritoires(Joueur joueurGagnant, Joueur joueurPerdant) {
 		if(joueurPerdant.getCartesTerritoires().size() >= 1) {
 			for(int i = 0; i < joueurPerdant.getCartesTerritoires().size(); i++) {
-				territAttaquant.getJoueurPossedantTerritoire().ajouterCarteTerritoire(joueurPerdant.getCartesTerritoires().get(i));
+				joueurGagnant.ajouterCarteTerritoire(joueurPerdant.getCartesTerritoires().get(i));
 			}
 			joueurPerdant.setCartesTerritoires(null);
 		}
