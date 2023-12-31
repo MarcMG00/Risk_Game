@@ -583,7 +583,7 @@ public class Risk {
 			Scanner sc = new Scanner(System.in);
 			
 		    for (int j = 0; j < this.joueurs.size(); j++) {
-		    	System.out.println(this.joueurs.get(j).getNom() + " C'est votre tour :");
+		    	System.out.println("C'est votre tour : " + this.joueurs.get(j).getNom());
 		    	
 		    	boolean sortirEchangement = false;
 		    	
