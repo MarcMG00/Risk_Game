@@ -78,11 +78,9 @@ public class IndividualTests {
 		// Nous ajoutons les cartes dans des listes par type de régiment
 		for(Carte_Territoire cjr : joueur.getCartesTerritoires()) {
 			if(cjr.getTypeRegiment().equals("Soldat")) {
-				
 				cartesSoldat.add(cjr);
 			}
 			else if(cjr.getTypeRegiment().equals("Cavalier")) {
-				
 				cartesCavalier.add(cjr);
 			}
 			else {
@@ -90,93 +88,108 @@ public class IndividualTests {
 			}
 		}
 		
-		// Vérification : on a au moins 3 cartes avec le même type de régiment, pour chacune des listes de type de régiments
-		// Artillerie
-		while(cartesArtillerie.size() >= 3) {
-			for(Territoire t : joueur.getTerritoires()) {
-				for(int iCarte = 0; iCarte < cartesArtillerie.size(); iCarte++) {
-					if(cartesArtillerie.get(iCarte).getTerritoire().getNomTerritoire().equals(t.getNomTerritoire()) && cartesPrioritaires.size() < 3) {
-						cartesPrioritaires.add(cartesArtillerie.get(iCarte));
-						cartesArtillerie.remove(cartesArtillerie.get(iCarte));
-					}
-				}
-			}
-			if(cartesPrioritaires.size() == 3) {
-				combosCartes.add(cartesPrioritaires);
-				cartesPrioritaires = new ArrayList<Carte_Territoire>();
-			}
-			else if(cartesPrioritaires.size() < 3 && cartesArtillerie.size() >= 1) {
-				while(!cartesArtillerie.isEmpty() && cartesPrioritaires.size() < 3) {
-					cartesPrioritaires.add(cartesArtillerie.get(0));
-					cartesArtillerie.remove(0);
-				}
-				if(cartesPrioritaires.size() == 3) {
-					combosCartes.add(cartesPrioritaires);
-					cartesPrioritaires = new ArrayList<Carte_Territoire>();
-				}
-			}
-		}
-		cartesPrioritaires = new ArrayList<Carte_Territoire>();
+//		// Vérification : on a au moins 3 cartes avec le même type de régiment, pour chacune des listes de type de régiments
+//		// Artillerie
+//		while(cartesArtillerie.size() >= 3) {
+//			for(Territoire t : joueur.getTerritoires()) {
+//				for(int iCarte = 0; iCarte < cartesArtillerie.size(); iCarte++) {
+//					if(cartesArtillerie.get(iCarte).getTerritoire().getNomTerritoire().equals(t.getNomTerritoire()) && cartesPrioritaires.size() < 3) {
+//						cartesPrioritaires.add(cartesArtillerie.get(iCarte));
+//						cartesArtillerie.remove(cartesArtillerie.get(iCarte));
+//					}
+//				}
+//			}
+//			// Si on a 3 cartes dans le combo, on ajoute ces trois dernières dans la liste globale des combos de cartes
+//			// Et on remet à 0 la liste de combos pour donner place à d'autres combos
+//			if(cartesPrioritaires.size() == 3) {
+//				combosCartes.add(cartesPrioritaires);
+//				cartesPrioritaires = new ArrayList<Carte_Territoire>();
+//			}
+//			// Si on a encore de la place dans les combos de cartes, et s'il y a des cartes du même type de régiment, on ajoute des cartes dans ce combo
+//			else if(cartesPrioritaires.size() < 3 && cartesArtillerie.size() >= 1) {
+//				while(!cartesArtillerie.isEmpty() && cartesPrioritaires.size() < 3) {
+//					cartesPrioritaires.add(cartesArtillerie.get(0));
+//					cartesArtillerie.remove(0);
+//				}
+//				if(cartesPrioritaires.size() == 3) {
+//					combosCartes.add(cartesPrioritaires);
+//					cartesPrioritaires = new ArrayList<Carte_Territoire>();
+//				}
+//			}
+//		}
+//		// On réinitialise le combo de cartes au cas où il y aurait une ou deux cartes qui ne sont pas compatibles avec d'autres cartes par la suite
+//		cartesPrioritaires = new ArrayList<Carte_Territoire>();
+		combosCartes = ajouterCartesMemeTypeRegiment(joueur.getTerritoires(), cartesArtillerie, combosCartes);
 		
-		// Soldat
-		while(cartesSoldat.size() >= 3) {
-			for(Territoire t : joueur.getTerritoires()) {
-				for(int iCarte = 0; iCarte < cartesSoldat.size(); iCarte++) {
-					if(cartesSoldat.get(iCarte).getTerritoire().getNomTerritoire().equals(t.getNomTerritoire()) && cartesPrioritaires.size() < 3) {
-						cartesPrioritaires.add(cartesSoldat.get(iCarte));
-						cartesSoldat.remove(cartesSoldat.get(iCarte));
-					}
-				}
-			}
-			if(cartesPrioritaires.size() == 3) {
-				combosCartes.add(cartesPrioritaires);
-				cartesPrioritaires = new ArrayList<Carte_Territoire>();
-			}
-			else if(cartesPrioritaires.size() < 3 && cartesSoldat.size() >= 1) {
-				while(!cartesSoldat.isEmpty() && cartesPrioritaires.size() < 3) {
-					cartesPrioritaires.add(cartesSoldat.get(0));
-					cartesSoldat.remove(0);
-				}
-				if(cartesPrioritaires.size() == 3) {
-					combosCartes.add(cartesPrioritaires);
-					cartesPrioritaires = new ArrayList<Carte_Territoire>();
-				}
-			}
-		}
-		cartesPrioritaires = new ArrayList<Carte_Territoire>();
+//		// Soldat
+//		while(cartesSoldat.size() >= 3) {
+//			for(Territoire t : joueur.getTerritoires()) {
+//				for(int iCarte = 0; iCarte < cartesSoldat.size(); iCarte++) {
+//					if(cartesSoldat.get(iCarte).getTerritoire().getNomTerritoire().equals(t.getNomTerritoire()) && cartesPrioritaires.size() < 3) {
+//						cartesPrioritaires.add(cartesSoldat.get(iCarte));
+//						cartesSoldat.remove(cartesSoldat.get(iCarte));
+//					}
+//				}
+//			}
+//			// Si on a 3 cartes dans le combo, on ajoute ces trois dernières dans la liste globale des combos de cartes
+//			// Et on remet à 0 la liste de combos pour donner place à d'autres combos
+//			if(cartesPrioritaires.size() == 3) {
+//				combosCartes.add(cartesPrioritaires);
+//				cartesPrioritaires = new ArrayList<Carte_Territoire>();
+//			}
+//			// Si on a encore de la place dans les combos de cartes, et s'il y a des cartes du même type de régiment, on ajoute des cartes dans ce combo
+//			else if(cartesPrioritaires.size() < 3 && cartesSoldat.size() >= 1) {
+//				while(!cartesSoldat.isEmpty() && cartesPrioritaires.size() < 3) {
+//					cartesPrioritaires.add(cartesSoldat.get(0));
+//					cartesSoldat.remove(0);
+//				}
+//				if(cartesPrioritaires.size() == 3) {
+//					combosCartes.add(cartesPrioritaires);
+//					cartesPrioritaires = new ArrayList<Carte_Territoire>();
+//				}
+//			}
+//		}
+//		// On réinitialise le combo de cartes au cas où il y aurait une ou deux cartes qui ne sont pas compatibles avec d'autres cartes par la suite
+//		cartesPrioritaires = new ArrayList<Carte_Territoire>();
+		combosCartes = ajouterCartesMemeTypeRegiment(joueur.getTerritoires(), cartesSoldat, combosCartes);
 		
-		// Cavalier
-		while(cartesCavalier.size() >= 3) {
-			for(Territoire t : joueur.getTerritoires()) {
-				for(int iCarte = 0; iCarte < cartesCavalier.size(); iCarte++) {
-					if(cartesCavalier.get(iCarte).getTerritoire().getNomTerritoire().equals(t.getNomTerritoire()) && cartesPrioritaires.size() < 3) {
-						cartesPrioritaires.add(cartesCavalier.get(iCarte));
-						cartesCavalier.remove(cartesCavalier.get(iCarte));
-					}
-				}
-			}
-			if(cartesPrioritaires.size() == 3) {
-				combosCartes.add(cartesPrioritaires);
-				cartesPrioritaires = new ArrayList<Carte_Territoire>();
-			}
-			else if(cartesPrioritaires.size() < 3 && cartesCavalier.size() >= 1) {
-				while(!cartesCavalier.isEmpty() && cartesPrioritaires.size() < 3) {
-					cartesPrioritaires.add(cartesCavalier.get(0));
-					cartesCavalier.remove(0);
-				}
-				if(cartesPrioritaires.size() == 3) {
-					combosCartes.add(cartesPrioritaires);
-					cartesPrioritaires = new ArrayList<Carte_Territoire>();
-				}
-			}
-		}
-		cartesPrioritaires = new ArrayList<Carte_Territoire>();
+//		// Cavalier
+//		while(cartesCavalier.size() >= 3) {
+//			for(Territoire t : joueur.getTerritoires()) {
+//				for(int iCarte = 0; iCarte < cartesCavalier.size(); iCarte++) {
+//					if(cartesCavalier.get(iCarte).getTerritoire().getNomTerritoire().equals(t.getNomTerritoire()) && cartesPrioritaires.size() < 3) {
+//						cartesPrioritaires.add(cartesCavalier.get(iCarte));
+//						cartesCavalier.remove(cartesCavalier.get(iCarte));
+//					}
+//				}
+//			}
+//			// Si on a 3 cartes dans le combo, on ajoute ces trois dernières dans la liste globale des combos de cartes
+//			// Et on remet à 0 la liste de combos pour donner place à d'autres combos
+//			if(cartesPrioritaires.size() == 3) {
+//				combosCartes.add(cartesPrioritaires);
+//				cartesPrioritaires = new ArrayList<Carte_Territoire>();
+//			}
+//			// Si on a encore de la place dans les combos de cartes, et s'il y a des cartes du même type de régiment, on ajoute des cartes dans ce combo
+//			else if(cartesPrioritaires.size() < 3 && cartesCavalier.size() >= 1) {
+//				while(!cartesCavalier.isEmpty() && cartesPrioritaires.size() < 3) {
+//					cartesPrioritaires.add(cartesCavalier.get(0));
+//					cartesCavalier.remove(0);
+//				}
+//				if(cartesPrioritaires.size() == 3) {
+//					combosCartes.add(cartesPrioritaires);
+//					cartesPrioritaires = new ArrayList<Carte_Territoire>();
+//				}
+//			}
+//		}
+//		// On réinitialise le combo de cartes au cas où il y aurait une ou deux cartes qui ne sont pas compatibles avec d'autres cartes par la suite
+//		cartesPrioritaires = new ArrayList<Carte_Territoire>();
+		combosCartes = ajouterCartesMemeTypeRegiment(joueur.getTerritoires(), cartesCavalier, combosCartes);
 		
 		// Vérification : on a  3 cartes avec le type de régiment qui est différent
 		// Pour ce faire, vérifier que les listes de soldats, artillerie, cavalier aient au moins une carte
 		while(cartesArtillerie.size() > 1 && cartesSoldat.size() > 1 && cartesCavalier.size() > 1) {
+			// Ajouter une carte d'artillerie
 			for(Territoire t : joueur.getTerritoires()) {
-				// Ajouter une carte d'artillerie
 				for(int iCarte = 0; iCarte < cartesArtillerie.size(); iCarte++) {
 					if(cartesPrioritaires.size() < 1 && cartesArtillerie.get(iCarte).getTerritoire().getNomTerritoire().equals(t.getNomTerritoire())) {
 						cartesPrioritaires.add(cartesArtillerie.get(iCarte));
@@ -248,6 +261,39 @@ public class IndividualTests {
 			System.out.println();
 		}
 		System.out.println(cartesCavalier.size());
+	}
+	
+	// Métode pour ajouter des cartes avec le même type de régiment dans un combo de cartes
+	public static ArrayList<ArrayList<Carte_Territoire>> ajouterCartesMemeTypeRegiment(ArrayList<Territoire> territoiresJoueur, ArrayList<Carte_Territoire> cartesMemeRegiment, ArrayList<ArrayList<Carte_Territoire>> combosCartes) {
+		ArrayList<Carte_Territoire> cartesPrioritaires= new ArrayList<Carte_Territoire>();
+		while(cartesMemeRegiment.size() >= 3) {
+			for(Territoire t : territoiresJoueur) {
+				for(int iCarte = 0; iCarte < cartesMemeRegiment.size(); iCarte++) {
+					if(cartesMemeRegiment.get(iCarte).getTerritoire().getNomTerritoire().equals(t.getNomTerritoire()) && cartesPrioritaires.size() < 3) {
+						cartesPrioritaires.add(cartesMemeRegiment.get(iCarte));
+						cartesMemeRegiment.remove(cartesMemeRegiment.get(iCarte));
+					}
+				}
+			}
+			// Si on a 3 cartes dans le combo, on ajoute ces trois dernières dans la liste globale des combos de cartes
+			// Et on remet à 0 la liste de combos pour donner place à d'autres combos
+			if(cartesPrioritaires.size() == 3) {
+				combosCartes.add(cartesPrioritaires);
+				cartesPrioritaires = new ArrayList<Carte_Territoire>();
+			}
+			// Si on a encore de la place dans les combos de cartes, et s'il y a des cartes du même type de régiment, on ajoute des cartes dans ce combo
+			else if(cartesPrioritaires.size() < 3 && cartesMemeRegiment.size() >= 1) {
+				while(!cartesMemeRegiment.isEmpty() && cartesPrioritaires.size() < 3) {
+					cartesPrioritaires.add(cartesMemeRegiment.get(0));
+					cartesMemeRegiment.remove(0);
+				}
+				if(cartesPrioritaires.size() == 3) {
+					combosCartes.add(cartesPrioritaires);
+					cartesPrioritaires = new ArrayList<Carte_Territoire>();
+				}
+			}
+		}
+		return combosCartes;
 	}
 	
 	public static void main(String[] args) {
