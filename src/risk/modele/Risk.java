@@ -598,6 +598,11 @@ public class Risk {
 						System.out.println(this.joueurs.get(j) + " Vous êtes obligés d'effectuer un échangement de cartes car vous possédez plus de 4 ou 6 cartes");
 						
 						EchangerCarte echanger = new EchangerCarte(this.joueurs.get(j));
+						
+						System.out.println("Voici les meilleures combinaisons de cartes (là où vous obtiendrez le plus de régiments)");
+						echanger.AfficherComboCartes();
+						
+						System.out.println("Ou si vous préférez, voici ci-dessous toutes vos cartes");
 						boolean echangePossible = echanger.VerificationEchangeCartes();
 						
 						if(echangePossible == true) {

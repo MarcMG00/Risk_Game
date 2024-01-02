@@ -176,4 +176,148 @@ public class EchangerCarte {
         return items.get(0);
     }
    
+   // Affiche les meilleures combinaisons de cartes (là où le joueur obtiendra le plus de régiments)
+   public void AfficherComboCartes() {
+		
+		// Liste contenant tous les combos de cartes, rengés par ordre d'avantage
+		ArrayList<ArrayList<Carte_Territoire>> combosCartes = new ArrayList<ArrayList<Carte_Territoire>>();
+		ArrayList<Carte_Territoire> cartesPrioritaires= new ArrayList<Carte_Territoire>();
+		
+		ArrayList<Carte_Territoire> cartesSoldat = new ArrayList<Carte_Territoire>();
+		ArrayList<Carte_Territoire> cartesCavalier = new ArrayList<Carte_Territoire>();
+		ArrayList<Carte_Territoire> cartesArtillerie = new ArrayList<Carte_Territoire>();
+		
+		// Nous ajoutons les cartes dans des listes par type de régiment
+		for(Carte_Territoire cjr : this.joueur.getCartesTerritoires()) {
+			if(cjr.getTypeRegiment().equals("Soldat")) {
+				cartesSoldat.add(cjr);
+			}
+			else if(cjr.getTypeRegiment().equals("Cavalier")) {
+				cartesCavalier.add(cjr);
+			}
+			else {
+				cartesArtillerie.add(cjr);
+			}
+		}
+		
+		// Vérification : on a au moins 3 cartes avec le même type de régiment, pour chacune des listes de type de régiments
+		// Artillerie
+		combosCartes = ajouterCartesMemeTypeRegiment(cartesArtillerie, combosCartes);
+		
+		// Soldat
+		combosCartes = ajouterCartesMemeTypeRegiment(cartesSoldat, combosCartes);
+		
+		// Cavalier
+		combosCartes = ajouterCartesMemeTypeRegiment(cartesCavalier, combosCartes);
+		
+		// Vérification : on a  3 cartes avec le type de régiment qui est différent
+		// Pour ce faire, vérifier que les listes de soldats, artillerie, cavalier aient au moins une carte
+		while(cartesArtillerie.size() > 1 && cartesSoldat.size() > 1 && cartesCavalier.size() > 1) {
+			// Ajouter une carte d'artillerie
+			for(Territoire t : this.joueur.getTerritoires()) {
+				for(int iCarte = 0; iCarte < cartesArtillerie.size(); iCarte++) {
+					if(cartesPrioritaires.size() < 1 && cartesArtillerie.get(iCarte).getTerritoire().getNomTerritoire().equals(t.getNomTerritoire())) {
+						cartesPrioritaires.add(cartesArtillerie.get(iCarte));
+						cartesArtillerie.remove(cartesArtillerie.get(iCarte));
+						break;
+					}
+				}
+				// On arrête de parcourir la boucle car on n'a besoin que d'une carte
+				if(cartesPrioritaires.size() == 1) {
+					break;
+				}
+			}
+			// Si aucune carte avec un territoire possédé par le joueur n'a été trouvée, on prend une carte au hasard (par exemple, la première de la liste)
+			if(cartesPrioritaires.size() < 1) {
+				cartesPrioritaires.add(cartesArtillerie.get(0));
+				cartesArtillerie.remove(cartesArtillerie.get(0));
+			}
+			
+			// Ajouter une carte de soldat
+			for(Territoire t : this.joueur.getTerritoires()) {
+				for(int iCarte = 0; iCarte < cartesSoldat.size(); iCarte++) {
+					if(cartesPrioritaires.size() < 2 && cartesSoldat.get(iCarte).getTerritoire().getNomTerritoire().equals(t.getNomTerritoire())) {
+						cartesPrioritaires.add(cartesSoldat.get(iCarte));
+						cartesSoldat.remove(cartesSoldat.get(iCarte));
+						break;
+					}
+				}
+				// On arrête de parcourir la boucle car on n'a besoin que d'une carte
+				if(cartesPrioritaires.size() == 2) {
+					break;
+				}
+			}
+			// Si aucune carte avec un territoire possédé par le joueur n'a été trouvée, on prend une carte au hasard (par exemple, la première de la liste)
+			if(cartesPrioritaires.size() < 2) {
+				cartesPrioritaires.add(cartesSoldat.get(0));
+				cartesSoldat.remove(cartesSoldat.get(0));
+			}
+			
+			// Ajouter une carte de cavalier
+			for(Territoire t : this.joueur.getTerritoires()) {
+				for(int iCarte = 0; iCarte < cartesCavalier.size(); iCarte++) {
+					if(cartesPrioritaires.size() < 3 && cartesCavalier.get(iCarte).getTerritoire().getNomTerritoire().equals(t.getNomTerritoire())) {
+						cartesPrioritaires.add(cartesCavalier.get(iCarte));
+						cartesCavalier.remove(cartesCavalier.get(iCarte));
+						break;
+					}
+				}
+				// On arrête de parcourir la boucle car on n'a besoin que d'une carte
+				if(cartesPrioritaires.size() == 3) {
+					break;
+				}
+			}
+			// Si aucune carte avec un territoire possédé par le joueur n'a été trouvée, on prend une carte au hasard (par exemple, la première de la liste)
+			if(cartesPrioritaires.size() < 3) {
+				cartesPrioritaires.add(cartesCavalier.get(0));
+				cartesCavalier.remove(cartesCavalier.get(0));
+			}
+			
+			combosCartes.add(cartesPrioritaires);
+			cartesPrioritaires = new ArrayList<Carte_Territoire>();
+		}
+		
+		// Affichage de tous les combos de cartes
+		System.out.println();
+		for(ArrayList<Carte_Territoire> listCombos: combosCartes) {
+			for(Carte_Territoire cts : listCombos) {
+				System.out.println(cts.getNumCarte() + " " + cts.getTerritoire().getNomTerritoire() + " - " + cts.getTypeRegiment());
+			}
+			System.out.println();
+		}
+	}
+	
+	// Métode pour ajouter des cartes avec le même type de régiment dans un combo de cartes
+	public ArrayList<ArrayList<Carte_Territoire>> ajouterCartesMemeTypeRegiment(ArrayList<Carte_Territoire> cartesMemeRegiment, ArrayList<ArrayList<Carte_Territoire>> combosCartes) {
+		ArrayList<Carte_Territoire> cartesPrioritaires= new ArrayList<Carte_Territoire>();
+		while(cartesMemeRegiment.size() >= 3) {
+			for(Territoire t : this.joueur.getTerritoires()) {
+				for(int iCarte = 0; iCarte < cartesMemeRegiment.size(); iCarte++) {
+					if(cartesMemeRegiment.get(iCarte).getTerritoire().getNomTerritoire().equals(t.getNomTerritoire()) && cartesPrioritaires.size() < 3) {
+						cartesPrioritaires.add(cartesMemeRegiment.get(iCarte));
+						cartesMemeRegiment.remove(cartesMemeRegiment.get(iCarte));
+					}
+				}
+			}
+			// Si on a 3 cartes dans le combo, on ajoute ces trois dernières dans la liste globale des combos de cartes
+			// Et on remet à 0 la liste de combos pour donner place à d'autres combos
+			if(cartesPrioritaires.size() == 3) {
+				combosCartes.add(cartesPrioritaires);
+				cartesPrioritaires = new ArrayList<Carte_Territoire>();
+			}
+			// Si on a encore de la place dans les combos de cartes, et s'il y a des cartes du même type de régiment, on ajoute des cartes dans ce combo
+			else if(cartesPrioritaires.size() < 3 && cartesMemeRegiment.size() >= 1) {
+				while(!cartesMemeRegiment.isEmpty() && cartesPrioritaires.size() < 3) {
+					cartesPrioritaires.add(cartesMemeRegiment.get(0));
+					cartesMemeRegiment.remove(0);
+				}
+				if(cartesPrioritaires.size() == 3) {
+					combosCartes.add(cartesPrioritaires);
+					cartesPrioritaires = new ArrayList<Carte_Territoire>();
+				}
+			}
+		}
+		return combosCartes;
+	}
+	
 }
